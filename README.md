@@ -1,4 +1,4 @@
-### Hi there 👋, searching for an Epic Boss
+### Well hello there 👋
 
 - 🔭 I’m currently working on developing my stack.
   - I'm good at creating APIs, SPAs and Dashboards, React Native (Expo) applications
