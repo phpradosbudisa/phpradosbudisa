@@ -1,4 +1,4 @@
-# 💫 About Me:
+💫 About Me:
 Well hello there 👋<br><br>
 - 🔭 I’m currently working on developing my stack.<br>
   -I'm good at creating APIs, SPAs and Dashboards, React Native (Expo) applications<br>
