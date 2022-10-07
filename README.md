@@ -1,5 +1,12 @@
 # 💫 About Me:
-Well hello there 👋<br><br>🔭 I’m currently working on developing my stack.<br>I'm good at creating APIs, SPAs and Dashboards, React Native (Expo) applications<br>😄 Stack: TypeScript, NestJS, ReactJs, VueJs, NodeJs, Laravel<br>Getting around with Linux, AWS, DigitalOcean, Nginx, Git, Google, Firebase, Mongo, MySQL, HTML, CSS, SASS<br>🌱 Projects I worked on nyd.care, go-call.me, valjhun.si, kotnig.si, chaineffect.net, linkaj.me, eu-poslovi.com, many others...<br>📫 How to reach me:<br>Email: rados.budisa@gmail.com<br>Phone: +386 70 295 791<br>⚡ Fun fact: Thinking outside of the box. Which box? Is there a box? Who is the box?
+Well hello there 👋<br><br>
+- 🔭 I’m currently working on developing my stack.<br>
+  -I'm good at creating APIs, SPAs and Dashboards, React Native (Expo) applications<br>
+-😄 Stack: TypeScript, NestJS, ReactJs, VueJs, NodeJs, Laravel<br>Getting around with Linux, AWS, DigitalOcean, Nginx, Git, Google, Firebase, Mongo, MySQL, HTML, CSS, SASS<br>
+-🌱 Projects I worked on nyd.care, go-call.me, valjhun.si, kotnig.si, chaineffect.net, linkaj.me, eu-poslovi.com, many others...<br>
+-📫 How to reach me:<br>Email: rados.budisa@gmail.com<br>
+  -Phone: +386 70 295 791<br>
+-⚡ Fun fact: Thinking outside of the box. Which box? Is there a box? Who is the box?
 
 
 # 💻 Tech Stack:
