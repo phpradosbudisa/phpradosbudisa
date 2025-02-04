@@ -2,7 +2,7 @@
 Well hello there 👋<br><br>
 -🔭 I’m currently working on developing my stack.<br>
   -I'm good at creating APIs, SPAs and Dashboards, React Native (Expo) applications<br>
--😄 Stack: TypeScript, NestJS, ReactJs, VueJs, NodeJs, Laravel<br>Getting around with Linux, AWS, DigitalOcean, Nginx, Git, Google, Firebase, Mongo, MySQL, HTML, CSS, SASS<br>
+-😄 Stack: TypeScript, NestJS, ReactJs, VueJs, NodeJs<br>Getting around with Linux, AWS, DigitalOcean, Nginx, Git, Google, Firebase, Mongo, MySQL, HTML, CSS, SASS<br>
 -🌱 Projects I worked on <a href="https://nyd.care">nyd.care</a>
 <a href="https://lam.care">lam.care</a>
 <a href="https://go-call.me">go-call.me</a>
