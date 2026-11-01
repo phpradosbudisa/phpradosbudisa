@@ -14,7 +14,6 @@ export const SITE = {
     "The posts introduce the topic. These pages are the reference you come back to.",
   ga4Id: "G-KFGVW1WRMB",
   finePrint: [
-    "Based in Ljubljana. The name means 'the beloved'. So does a green CI pipeline.",
     "Slovenia has about 2 million people. I run 5 products. Working on the ratio.",
     "Five products in parallel. The CPU is fine. The calendar is not.",
     "I ship before the burja does.",
