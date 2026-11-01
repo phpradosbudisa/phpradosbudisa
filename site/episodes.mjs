@@ -10,6 +10,7 @@ export const SITE = {
   positioning: "8 years shipping software",
   intro:
     "The posts introduce the topic. These pages are the reference you come back to.",
+  ga4Id: "",
 };
 
 export const FILTERS = [
@@ -27,6 +28,7 @@ export const PRODUCTS = [
     domain: "convertixdigital.com",
     tagline: "We fix and ship AI-built apps.",
     status: "Live",
+    linkSlug: "convertix",
   },
   {
     name: "Urejamo.si",
@@ -34,6 +36,7 @@ export const PRODUCTS = [
     domain: "urejamo.si",
     tagline: "One inquiry. Up to three offers.",
     status: "Live",
+    linkSlug: "urejamo",
   },
   {
     name: "DueChat",
@@ -41,6 +44,7 @@ export const PRODUCTS = [
     domain: "duechat.io",
     tagline: "Your AI can now get you paid.",
     status: "Live",
+    linkSlug: "duechat",
   },
   {
     name: "Nabiralniček",
@@ -48,6 +52,7 @@ export const PRODUCTS = [
     domain: "nabiralnicek.si",
     tagline: "Pošta pride k nam. Vi jo vidite v portalu.",
     status: "Live",
+    linkSlug: "nabiralnicek",
   },
   {
     name: "Holdquiet",

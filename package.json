@@ -4,5 +4,8 @@
   "scripts": {
     "build": "node site/build.mjs",
     "preview": "npx --yes serve docs -l 4173"
+  },
+  "dependencies": {
+    "@resvg/resvg-js": "^2.6.2"
   }
 }
