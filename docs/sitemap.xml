@@ -48,8 +48,4 @@
     <loc>https://phpradosbudisa.github.io/privacy/</loc>
     <priority>0.3</priority>
   </url>
-  <url>
-    <loc>https://phpradosbudisa.github.io/imprint/</loc>
-    <priority>0.3</priority>
-  </url>
 </urlset>

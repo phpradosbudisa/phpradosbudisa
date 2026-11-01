@@ -25,13 +25,6 @@ function assetPrefix(depth) {
   return depth === 0 ? "" : "../".repeat(depth);
 }
 
-function fontsLink() {
-  return `<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-<link href="https://api.fontshare.com/v2/css?f[]=geist-mono@400,500,600,700&display=swap" rel="stylesheet">`;
-}
-
 function headMeta({ title, description, url, depth }) {
   const prefix = assetPrefix(depth);
   const fullTitle = title === SITE.title ? title : `${title} · Ship`;
@@ -50,7 +43,6 @@ function headMeta({ title, description, url, depth }) {
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="${esc(fullTitle)}">
 <meta name="twitter:description" content="${esc(description)}">
-${fontsLink()}
 <link rel="stylesheet" href="${prefix}assets/styles.css">
 <link rel="stylesheet" href="${prefix}assets/print.css" media="print">
 </head>`;
@@ -61,8 +53,7 @@ function footer(depth) {
   return `<footer class="site-footer wrap">
 <nav aria-label="Footer">
 <a href="${prefix}privacy/">Privacy</a>
-<a href="${prefix}imprint/">Imprint</a>
-<a href="#">Instagram</a>
+<a href="${SITE.instagram}" rel="noopener noreferrer">Instagram</a>
 </nav>
 <p>© ${new Date().getFullYear()} ${esc(SITE.name)} · Examples use example.com; no client data.</p>
 </footer>`;
@@ -88,8 +79,8 @@ function ctaSoft(slug, depth) {
   const audit = `https://convertixdigital.com/en/audit?utm_source=ship-hub&utm_content=${slug}`;
   return `<section class="cta-soft wrap" aria-labelledby="cta-${slug}">
 <h2 id="cta-${slug}" class="visually-hidden">Convertix audit</h2>
-<p><strong>Need it done?</strong> Convertix launch audit, <strong>€390</strong>. Written report, prioritised fix list, fixed quote. Credited in full if you go ahead. <a href="${audit}">See the audit →</a></p>
-<p class="vat">No VAT added: Convertix Digital is not VAT-registered (Art. 94(1) ZDDV-1).</p>
+<p><strong>Need it done?</strong> Launch audit for AI-built apps. €390, 3 working days. A senior developer reads your code, database rules and payment flow, then tells you what to fix before real users arrive. <a href="${audit}">See the audit →</a></p>
+<p class="vat">Convertix Digital (Pika Care d.o.o., Slovenia) is not VAT-registered. VAT is not charged under Art. 94(1) ZDDV-1.</p>
 </section>`;
 }
 
@@ -221,7 +212,7 @@ ${headerBlock(depth)}
 <h1>${esc(SITE.title)}</h1>
 <p class="tagline">Senior developer · ${esc(SITE.positioning)}</p>
 <p class="tagline">${esc(SITE.metaDescription)}</p>
-<a class="ig-link" href="#">Instagram</a>
+<a class="ig-link" href="${SITE.instagram}" rel="noopener noreferrer">Instagram</a>
 </div>
 <p class="intro">${esc(SITE.intro)}</p>
 <section class="projects" aria-labelledby="projects-heading">
@@ -282,6 +273,7 @@ ${headerBlock(depth, { showHomeLink: true })}
 <h1>${esc(title)}</h1>
 ${bodyHtml}
 </main>
+${ctaSoft(slug, depth)}
 ${footer(depth)}
 </body>
 </html>
@@ -304,6 +296,7 @@ ${headerBlock(depth)}
 <h1>Page not found</h1>
 <p>That checklist is not here. <a href="./">Back to Ship</a></p>
 </main>
+${ctaSoft("404", depth)}
 ${footer(depth)}
 </body>
 </html>
@@ -320,7 +313,6 @@ function sitemap() {
       lastmod: e.dateIso,
     })),
     { loc: `${SITE.baseUrl}/privacy/`, priority: "0.3" },
-    { loc: `${SITE.baseUrl}/imprint/`, priority: "0.3" },
   ];
   let xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`;
   for (const u of urls) {
@@ -349,6 +341,14 @@ function copyAssets() {
   ];
   for (const [name, src] of copies) {
     fs.copyFileSync(src, path.join(assetsOut, name));
+  }
+  const fontsSrc = path.join(__dirname, "assets", "fonts");
+  const fontsOut = path.join(assetsOut, "fonts");
+  fs.mkdirSync(fontsOut, { recursive: true });
+  for (const f of fs.readdirSync(fontsSrc)) {
+    if (f.endsWith(".woff2")) {
+      fs.copyFileSync(path.join(fontsSrc, f), path.join(fontsOut, f));
+    }
   }
 }
 
@@ -379,16 +379,8 @@ writeFile(
 <p>No server-side personal data at launch. You can clear localStorage in your browser. Contact the site owner for privacy requests.</p>`,
   })
 );
-writeFile(
-  "imprint/index.html",
-  legalPage({
-    slug: "imprint",
-    title: "Imprint",
-    bodyHtml: `<p><strong>Convertix Digital</strong> · Rados Budisa</p>`,
-  })
-);
 writeFile("404.html", notFoundPage());
 writeFile("sitemap.xml", sitemap());
 writeFile("robots.txt", robots());
 
-console.log("Built docs/ (" + (EPISODES.length + 4) + " pages)");
+console.log("Built docs/ (" + (EPISODES.length + 3) + " pages)");

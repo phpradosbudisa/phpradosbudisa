@@ -1,5 +1,6 @@
 export const SITE = {
   baseUrl: "https://phpradosbudisa.github.io",
+  instagram: "https://www.instagram.com/inventive.dev/",
   title: "Ship: what actually breaks when you go live",
   metaDescription:
     "Free checklists from 20 years of shipping software. One page per topic, with a copy-paste prompt and official sources.",
