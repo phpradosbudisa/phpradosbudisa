@@ -1,5 +1,5 @@
 export const SITE = {
-  baseUrl: "https://phpradosbudisa.github.io",
+  baseUrl: "https://phpradosbudisa.github.io/phpradosbudisa",
   instagram: "https://www.instagram.com/inventive.dev/",
   title: "Ship: what actually breaks when you go live",
   metaDescription:
