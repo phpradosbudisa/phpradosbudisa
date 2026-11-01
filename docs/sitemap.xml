@@ -1,51 +1,56 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://phpradosbudisa.github.io/</loc>
+    <loc>https://phpradosbudisa.github.io/phpradosbudisa/</loc>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://phpradosbudisa.github.io/docs/</loc>
+    <loc>https://phpradosbudisa.github.io/phpradosbudisa/why/</loc>
+    <lastmod>2026-11-01</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://phpradosbudisa.github.io/phpradosbudisa/docs/</loc>
     <lastmod>2026-11-14</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://phpradosbudisa.github.io/pricing/</loc>
+    <loc>https://phpradosbudisa.github.io/phpradosbudisa/pricing/</loc>
     <lastmod>2026-11-12</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://phpradosbudisa.github.io/seo/</loc>
+    <loc>https://phpradosbudisa.github.io/phpradosbudisa/seo/</loc>
     <lastmod>2026-11-10</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://phpradosbudisa.github.io/email/</loc>
+    <loc>https://phpradosbudisa.github.io/phpradosbudisa/email/</loc>
     <lastmod>2026-11-09</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://phpradosbudisa.github.io/monolith/</loc>
+    <loc>https://phpradosbudisa.github.io/phpradosbudisa/monolith/</loc>
     <lastmod>2026-11-07</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://phpradosbudisa.github.io/security/</loc>
+    <loc>https://phpradosbudisa.github.io/phpradosbudisa/security/</loc>
     <lastmod>2026-11-05</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://phpradosbudisa.github.io/backup/</loc>
+    <loc>https://phpradosbudisa.github.io/phpradosbudisa/backup/</loc>
     <lastmod>2026-11-03</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://phpradosbudisa.github.io/launch/</loc>
+    <loc>https://phpradosbudisa.github.io/phpradosbudisa/launch/</loc>
     <lastmod>2026-11-02</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://phpradosbudisa.github.io/privacy/</loc>
+    <loc>https://phpradosbudisa.github.io/phpradosbudisa/privacy/</loc>
     <priority>0.3</priority>
   </url>
 </urlset>

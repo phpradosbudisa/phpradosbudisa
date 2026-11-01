@@ -1,7 +1,7 @@
 import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
-import { SITE, EPISODES, getPrompt } from "./episodes.mjs";
+import { SITE, EPISODES, PRODUCTS, getPrompt } from "./episodes.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.join(__dirname, "..");
@@ -37,9 +37,6 @@ function countChecklistItems(ep) {
   return n;
 }
 
-function episodeIndex(slug) {
-  return EPISODES.findIndex((e) => e.slug === slug);
-}
 
 function headMeta({ title, description, url, depth }) {
   const prefix = assetPrefix(depth);
@@ -94,7 +91,7 @@ function homeHero(depth) {
 <p class="hero-meta">${esc(SITE.metaDescription)}</p>
 <div class="pill-row">
 <a class="pill" href="${SITE.instagram}" rel="noopener noreferrer">Instagram</a>
-<a class="pill" href="#projects">Projects</a>
+<a class="pill" href="#products">Products</a>
 </div>
 </div>
 </div>
@@ -111,12 +108,87 @@ function ctaAudit(slug, depth) {
 </section>`;
 }
 
+function renderStepSources(ep, indexes) {
+  if (!indexes?.length) return "";
+  let html = `<ul class="step-source-list">`;
+  for (const i of indexes) {
+    const s = ep.sources[i];
+    if (!s) continue;
+    html += `<li><span class="source-domain">${esc(sourceDomain(s.url))}</span><a href="${esc(s.url)}" rel="noopener noreferrer">${esc(s.title)}</a></li>`;
+  }
+  html += `</ul>`;
+  return html;
+}
+
+function renderStory(ep) {
+  if (ep.introPage) {
+    let html = `<div class="story">`;
+    if (ep.storyLede) {
+      html += `<p class="story-lede">${esc(ep.storyLede)}</p>`;
+    }
+    for (const block of ep.introSections || []) {
+      html += `<section class="story-block"><h2 class="story-block-title">${esc(block.heading)}</h2>`;
+      if (block.episodeIndex) {
+        html += renderEpisodeIndexList(1);
+      } else {
+        for (const p of block.paragraphs || []) {
+          html += `<p>${esc(p)}</p>`;
+        }
+      }
+      html += `</section>`;
+    }
+    html += `</div>`;
+    return html;
+  }
+  if (!ep.storyLede && !ep.storySteps?.length) return "";
+  let html = `<div class="story">`;
+  html += `<p class="story-lede">${esc(ep.storyLede)}</p>`;
+  if (ep.storySteps?.length) {
+    html += `<p class="story-toc-label">The story in ${ep.storySteps.length} steps</p>`;
+    html += `<ol class="story-steps">`;
+    for (const step of ep.storySteps) {
+      html += `<li class="story-step">`;
+      html += `<h2 class="story-step-title">${esc(step.title)}</h2>`;
+      const parts = [
+        ["Situation", step.situation],
+        ["Decision", step.decision],
+        ["Tradeoff", step.tradeoff],
+        ["What I choose", step.choice],
+        ["What happens in prod", step.prod],
+      ];
+      for (const [label, text] of parts) {
+        if (!text) continue;
+        html += `<p class="story-part"><span class="story-kicker">${esc(label)}</span> ${esc(text)}</p>`;
+      }
+      html += renderStepSources(ep, step.sourceIndexes);
+      html += `</li>`;
+    }
+    html += `</ol>`;
+  }
+  html += `</div>`;
+  return html;
+}
+
+function renderEpisodeIndexList(depth) {
+  const prefix = assetPrefix(depth);
+  const rows = EPISODES.filter((e) => e.num > 0)
+    .slice()
+    .sort((a, b) => a.num - b.num)
+    .map(
+      (e) =>
+        `<li><a href="${prefix}${e.slug}/"><span class="ep-index-num">${epLabel(e.num)}</span><span class="ep-index-title">${esc(e.title)}</span></a></li>`
+    )
+    .join("");
+  return `<ul class="episode-index-list">${rows}</ul>`;
+}
+
 function renderChecklist(ep) {
+  if (!ep.sections?.length || ep.introPage) return "";
   const total = countChecklistItems(ep);
   let itemIndex = 0;
-  let html = `<section class="checklist" aria-labelledby="checklist-heading">
+  let html = `<section class="checklist reference-checklist" aria-labelledby="checklist-heading">
 <div class="checklist-head">
-<h2 id="checklist-heading">Checklist</h2>
+<h2 id="checklist-heading">Reference checklist</h2>
 <span id="checklist-progress" class="checklist-progress">0 / ${total} done</span>
 </div>`;
   for (const sec of ep.sections) {
@@ -145,6 +217,7 @@ function renderChecklist(ep) {
 }
 
 function renderPrompt(ep) {
+  if (ep.introPage || !getPrompt(ep)) return "";
   const text = getPrompt(ep);
   const id = `prompt-${ep.slug}`;
   return `<section class="prompt-section" aria-labelledby="prompt-heading">
@@ -170,11 +243,32 @@ function renderSources(ep) {
   return html;
 }
 
+function listEpisodesHome() {
+  const rest = EPISODES.filter((e) => !e.introPage)
+    .slice()
+    .sort((a, b) => b.num - a.num);
+  const intro = EPISODES.find((e) => e.introPage);
+  return intro ? [intro, ...rest] : rest;
+}
+
+function navEpisodes(ep) {
+  const intro = EPISODES.find((e) => e.introPage);
+  const numbered = EPISODES.filter((e) => !e.introPage)
+    .slice()
+    .sort((a, b) => a.num - b.num);
+  if (ep.introPage) {
+    return { newer: null, older: numbered[0] || null };
+  }
+  const idx = numbered.findIndex((e) => e.slug === ep.slug);
+  const newer =
+    idx <= 0 ? intro || null : numbered[idx - 1];
+  const older = idx < 0 || idx >= numbered.length - 1 ? null : numbered[idx + 1];
+  return { newer, older };
+}
+
 function episodeNav(ep, depth) {
   const prefix = assetPrefix(depth);
-  const idx = episodeIndex(ep.slug);
-  const newer = idx > 0 ? EPISODES[idx - 1] : null;
-  const older = idx >= 0 && idx < EPISODES.length - 1 ? EPISODES[idx + 1] : null;
+  const { newer, older } = navEpisodes(ep);
   if (!newer && !older) return "";
   const count = (newer ? 1 : 0) + (older ? 1 : 0);
   let html = `<nav class="episode-nav wrap${count === 1 ? " episode-nav--single" : ""}" aria-label="Episode navigation">`;
@@ -194,20 +288,24 @@ function episodePage(ep) {
   const depth = 1;
   const prefix = assetPrefix(depth);
   const url = `${SITE.baseUrl}/${ep.slug}/`;
+  const metaLine = ep.introPage
+    ? `<p class="episode-meta">${esc(SITE.positioning)}</p>`
+    : `<p class="episode-meta">From the post on ${esc(ep.date)}</p>`;
   const body = `<body data-episode="${ep.slug}">
 <a class="skip-link" href="#main">Skip to content</a>
-<a class="home-link wrap" href="${prefix}">← All checklists</a>
+<a class="home-link wrap" href="${prefix}">← All episodes</a>
 ${brandBar(depth)}
 <main id="main" class="wrap">
 <article>
 <header class="episode-page-head">
 <h1>${esc(ep.title)}</h1>
 <p class="lead-promise">${esc(ep.promise)}</p>
-<p class="episode-meta">From the post on ${esc(ep.date)}</p>
+${metaLine}
 </header>
+${renderStory(ep)}
 ${renderChecklist(ep)}
 ${renderPrompt(ep)}
-${renderSources(ep)}
+${ep.storySteps?.length || ep.introPage ? "" : renderSources(ep)}
 </article>
 ${episodeNav(ep, depth)}
 ${ctaAudit(ep.slug, depth)}
@@ -227,11 +325,20 @@ ${footer(depth)}
   );
 }
 
+function productRows() {
+  let html = `<ul class="product-list">`;
+  for (const p of PRODUCTS) {
+    html += `<li class="product-row"><a href="${esc(p.url)}" rel="noopener noreferrer"><span class="product-name">${esc(p.name)}</span><span class="product-tagline">${esc(p.tagline)}</span><span class="product-domain">${esc(p.domain)}</span><span class="product-arrow" aria-hidden="true">→</span></a></li>`;
+  }
+  html += `</ul>`;
+  return html;
+}
+
 function homePage() {
   const depth = 0;
   const url = `${SITE.baseUrl}/`;
   let rows = "";
-  for (const ep of EPISODES) {
+  for (const ep of listEpisodesHome()) {
     rows += `<li class="episode-row"><a href="${ep.slug}/"><span class="ep-num">${epLabel(ep.num)}</span><span class="ep-tag">${esc(ep.keyword)}</span><span class="ep-title">${esc(ep.title)}</span><span class="ep-date">${esc(ep.date)}</span><span class="ep-arrow" aria-hidden="true">→</span></a></li>`;
   }
   const body = `<body>
@@ -239,23 +346,12 @@ function homePage() {
 ${homeHero(depth)}
 <main id="main" class="wrap">
 <p class="intro-block">${esc(SITE.intro)}</p>
-<section class="projects-section" id="projects" aria-labelledby="projects-heading">
-<p class="section-label" id="projects-heading">Projects</p>
-<div class="project-grid">
-<a class="project-card" href="https://convertixdigital.com" rel="noopener noreferrer">
-<div class="project-card-head"><h3>Convertix</h3><span class="arrow" aria-hidden="true">→</span></div>
-<p>Launch studio.</p>
-<span class="project-domain">convertixdigital.com</span>
-</a>
-<a class="project-card" href="https://urejamo.si" rel="noopener noreferrer">
-<div class="project-card-head"><h3>Urejamo.si</h3><span class="arrow" aria-hidden="true">→</span></div>
-<p>Local services marketplace.</p>
-<span class="project-domain">urejamo.si</span>
-</a>
-</div>
+<section class="products-section" id="products" aria-labelledby="products-heading">
+<p class="section-label" id="products-heading">Products I've built</p>
+${productRows()}
 </section>
 <section class="episode-list-section" aria-labelledby="episodes-heading">
-<p class="section-label" id="episodes-heading">Checklists</p>
+<p class="section-label" id="episodes-heading">Episodes</p>
 <ul class="episode-list">${rows}</ul>
 </section>
 ${ctaAudit("home", depth)}
@@ -281,7 +377,7 @@ function legalPage({ title, bodyHtml, slug }) {
     headMeta({ title, description: title, url, depth }) +
     `<body>
 <a class="skip-link" href="#main">Skip to content</a>
-<a class="home-link wrap" href="../">← All checklists</a>
+<a class="home-link wrap" href="../">← All episodes</a>
 ${brandBar(depth)}
 <main id="main" class="wrap legal-page">
 <h1>${esc(title)}</h1>

@@ -1,5 +1,7 @@
+import { WHY_EPISODE, applyStories } from "./stories.mjs";
+
 export const SITE = {
-  baseUrl: "https://phpradosbudisa.github.io",
+  baseUrl: "https://phpradosbudisa.github.io/phpradosbudisa",
   instagram: "https://www.instagram.com/inventive.dev/",
   title: "Ship: what actually breaks when you go live",
   metaDescription:
@@ -18,7 +20,22 @@ export const FILTERS = [
   { id: "build-in-public", label: "Build in public" },
 ];
 
-export const EPISODES = [
+export const PRODUCTS = [
+  {
+    name: "Convertix",
+    url: "https://convertixdigital.com",
+    domain: "convertixdigital.com",
+    tagline: "We fix and ship AI-built apps.",
+  },
+  {
+    name: "Urejamo.si",
+    url: "https://urejamo.si",
+    domain: "urejamo.si",
+    tagline: "One inquiry. Up to three quotes from local providers.",
+  },
+];
+
+const EPISODE_LIST = [
   {
     slug: "docs",
     num: 8,
@@ -530,6 +547,8 @@ export const EPISODES = [
     ],
   },
 ];
+
+export const EPISODES = [WHY_EPISODE, ...applyStories(EPISODE_LIST)];
 
 export function launchPromptBody(ep) {
   if (!ep.promptList) return ep.prompt;
