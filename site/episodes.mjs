@@ -18,6 +18,7 @@ export const SITE = {
     "Slovenia has about 2 million people. I run 5 products. Working on the ratio.",
     "Five products in parallel. The CPU is fine. The calendar is not.",
     "I ship before the burja does.",
+    "Burad means barrel. Five products, one barrel, zero leaks so far.",
   ],
 };
 
