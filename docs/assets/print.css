@@ -1,0 +1,26 @@
+@media print {
+  body {
+    background: #fff !important;
+    color: #16131b;
+  }
+  .site-header,
+  .cta-soft,
+  .more-checklists,
+  .filter-bar,
+  .copy-row button,
+  .site-footer {
+    display: none !important;
+  }
+  .checklist input {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  a[href]::after {
+    content: " (" attr(href) ")";
+    font-size: 0.85em;
+    color: #4b4454;
+  }
+  .prompt-block {
+    break-inside: avoid;
+  }
+}

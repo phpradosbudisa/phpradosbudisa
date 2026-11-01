@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>20 things I check before any app goes live · Ship</title>
+<meta name="description" content="The pre-launch pass that keeps launch week quiet.">
+<link rel="canonical" href="https://phpradosbudisa.github.io/launch/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="20 things I check before any app goes live · Ship">
+<meta property="og:description" content="The pre-launch pass that keeps launch week quiet.">
+<meta property="og:url" content="https://phpradosbudisa.github.io/launch/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="20 things I check before any app goes live · Ship">
+<meta name="twitter:description" content="The pre-launch pass that keeps launch week quiet.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<link href="https://api.fontshare.com/v2/css?f[]=geist-mono@400,500,600,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/styles.css">
+<link rel="stylesheet" href="../assets/print.css" media="print">
+</head><body data-episode="launch">
+<a class="skip-link" href="#main">Skip to content</a>
+<a class="home-link" href="../">← All checklists</a><header class="site-header wrap">
+<div class="header-inner">
+<img src="../assets/avatar_circle.png" width="72" height="72" alt="">
+<div class="header-text">
+<p class="tagline"><strong>Rados Budisa</strong> · 20 years shipping software</p>
+</div>
+</div>
+</header>
+<main id="main" class="wrap">
+<article>
+<div class="episode-hero">
+<h1>20 things I check before any app goes live</h1>
+<p class="episode-promise">The pre-launch pass that keeps launch week quiet.</p>
+<p class="episode-meta">From the post on 2 Nov 2026</p>
+</div>
+<section class="checklist" aria-labelledby="checklist-heading">
+<h2 id="checklist-heading">Full checklist</h2><p class="lead">20 years of shipping software, and launch day still breaks in the same places. This is the list I go through before anything goes live, mine or a client's.</p><p class="lead">What breaks in prod is rarely the feature. It's the cert nobody renews, the reset email in spam, the migration that locks a table.</p><h2>Domain &amp; HTTPS</h2><ol><li><input type="checkbox" id="launch-0" data-item="launch-0" aria-label="Checklist item"><label for="launch-0">HTTPS only. Every http:// URL 301s to https://.</label></li><li><input type="checkbox" id="launch-1" data-item="launch-1" aria-label="Checklist item"><label for="launch-1">www and the bare domain resolve to ONE canonical host.</label></li><li><input type="checkbox" id="launch-2" data-item="launch-2" aria-label="Checklist item"><label for="launch-2">Certificates auto-renew, and something alerts you 14 days before expiry.</label></li></ol><h2>Secrets &amp; access</h2><ol><li><input type="checkbox" id="launch-3" data-item="launch-3" aria-label="Checklist item"><label for="launch-3">No secret keys in the frontend bundle. Anything that ever shipped to a browser gets rotated.</label></li><li><input type="checkbox" id="launch-4" data-item="launch-4" aria-label="Checklist item"><label for="launch-4">Database access rules deny by default. Test them logged in as a second, ordinary user.</label></li><li><input type="checkbox" id="launch-5" data-item="launch-5" aria-label="Checklist item"><label for="launch-5">Rate limits on login, signup, password reset, OTP and contact forms.</label></li></ol><h2>Hardening</h2><ol><li><input type="checkbox" id="launch-6" data-item="launch-6" aria-label="Checklist item"><label for="launch-6">Security headers: HSTS, nosniff, Referrer-Policy, frame-ancestors, and a CSP rolled out in Report-Only first.</label></li><li><input type="checkbox" id="launch-7" data-item="launch-7" aria-label="Checklist item"><label for="launch-7">Dependency audit is clean or triaged; the lockfile is committed.</label></li></ol><h2>Data</h2><ol><li><input type="checkbox" id="launch-8" data-item="launch-8" aria-label="Checklist item"><label for="launch-8">Automated backups, plus one real restore into a scratch environment. Time it.</label></li><li><input type="checkbox" id="launch-9" data-item="launch-9" aria-label="Checklist item"><label for="launch-9">Every migration has a rollback, or a written roll-forward plan.</label></li></ol><h2>Money &amp; email</h2><ol><li><input type="checkbox" id="launch-10" data-item="launch-10" aria-label="Checklist item"><label for="launch-10">Payment webhooks: signature verified, idempotent, safe to retry. App state comes from the webhook, not the success page.</label></li><li><input type="checkbox" id="launch-11" data-item="launch-11" aria-label="Checklist item"><label for="launch-11">A refund and a declined card tested end to end.</label></li><li><input type="checkbox" id="launch-12" data-item="launch-12" aria-label="Checklist item"><label for="launch-12">SPF, DKIM and DMARC on the domain you send from.</label></li><li><input type="checkbox" id="launch-13" data-item="launch-13" aria-label="Checklist item"><label for="launch-13">Password reset and verification emails tested in Gmail AND Outlook.</label></li></ol><h2>Seeing problems</h2><ol><li><input type="checkbox" id="launch-14" data-item="launch-14" aria-label="Checklist item"><label for="launch-14">Error tracking that alerts a human, not a dashboard nobody opens.</label></li><li><input type="checkbox" id="launch-15" data-item="launch-15" aria-label="Checklist item"><label for="launch-15">Uptime check on a real path (log in, load data), not just the homepage.</label></li><li><input type="checkbox" id="launch-16" data-item="launch-16" aria-label="Checklist item"><label for="launch-16">Logs contain no passwords, tokens or personal data.</label></li></ol><h2>Search &amp; rollback</h2><ol><li><input type="checkbox" id="launch-17" data-item="launch-17" aria-label="Checklist item"><label for="launch-17">Titles, meta descriptions and OG image per page, sitemap.xml live, robots.txt not blocking production, staging noindex removed.</label></li><li><input type="checkbox" id="launch-18" data-item="launch-18" aria-label="Checklist item"><label for="launch-18">Replacing an old site? A 301 map from every old URL.</label></li><li><input type="checkbox" id="launch-19" data-item="launch-19" aria-label="Checklist item"><label for="launch-19">Rollback in one step, and a named person on call for the first 72 hours.</label></li></ol><p class="lead">My call: speed vs. boring, I pick boring. Every item here is cheaper the week before launch than the week after.</p></section>
+<section class="prompt-section" aria-labelledby="prompt-heading">
+<h2 id="prompt-heading">Copy-paste prompt</h2>
+<div class="copy-row">
+<button type="button" data-copy-target="prompt-launch">Copy prompt</button>
+<span class="hint">Paste into your coding assistant.</span>
+</div>
+<pre class="prompt-block" id="prompt-launch">Audit this project against the 20 items below. For each: pass / fail / not applicable, the file or setting that proves it, and the smallest fix. Don't change code until I confirm.
+
+DOMAIN &amp; HTTPS
+1. HTTPS only. Every http:// URL 301s to https://.
+2. www and the bare domain resolve to ONE canonical host.
+3. Certificates auto-renew, and something alerts you 14 days before expiry.
+SECRETS &amp; ACCESS
+4. No secret keys in the frontend bundle. Anything that ever shipped to a browser gets rotated.
+5. Database access rules deny by default. Test them logged in as a second, ordinary user.
+6. Rate limits on login, signup, password reset, OTP and contact forms.
+HARDENING
+7. Security headers: HSTS, nosniff, Referrer-Policy, frame-ancestors, and a CSP rolled out in Report-Only first.
+8. Dependency audit is clean or triaged; the lockfile is committed.
+DATA
+9. Automated backups, plus one real restore into a scratch environment. Time it.
+10. Every migration has a rollback, or a written roll-forward plan.
+MONEY &amp; EMAIL
+11. Payment webhooks: signature verified, idempotent, safe to retry. App state comes from the webhook, not the success page.
+12. A refund and a declined card tested end to end.
+13. SPF, DKIM and DMARC on the domain you send from.
+14. Password reset and verification emails tested in Gmail AND Outlook.
+SEEING PROBLEMS
+15. Error tracking that alerts a human, not a dashboard nobody opens.
+16. Uptime check on a real path (log in, load data), not just the homepage.
+17. Logs contain no passwords, tokens or personal data.
+SEARCH &amp; ROLLBACK
+18. Titles, meta descriptions and OG image per page, sitemap.xml live, robots.txt not blocking production, staging noindex removed.
+19. Replacing an old site? A 301 map from every old URL.
+20. Rollback in one step, and a named person on call for the first 72 hours.</pre>
+</section>
+<section class="sources" aria-labelledby="sources-heading">
+<h2 id="sources-heading">Official sources</h2><ul><li><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Strict-Transport-Security" rel="noopener noreferrer">Strict-Transport-Security (HSTS)</a><span>MDN reference for HSTS.</span></li><li><a href="https://cheatsheetseries.owasp.org/cheatsheets/HTTP_Headers_Cheat_Sheet.html" rel="noopener noreferrer">HTTP Headers Cheat Sheet</a><span>OWASP security header guidance.</span></li><li><a href="https://owasp.org/www-project-application-security-verification-standard/" rel="noopener noreferrer">OWASP ASVS</a><span>Application security verification standard.</span></li><li><a href="https://docs.stripe.com/webhooks" rel="noopener noreferrer">Stripe webhooks</a><span>Webhook signing and delivery.</span></li><li><a href="https://developers.google.com/search/docs/fundamentals/seo-starter-guide" rel="noopener noreferrer">SEO starter guide</a><span>Google fundamentals for crawlable sites.</span></li><li><a href="https://letsencrypt.org/docs/" rel="noopener noreferrer">Let's Encrypt docs</a><span>Automated certificate issuance.</span></li></ul></section>
+</article>
+<section class="cta-soft wrap" aria-labelledby="cta-launch">
+<h2 id="cta-launch" class="visually-hidden">Convertix audit</h2>
+<p><strong>Need it done?</strong> Convertix launch audit, <strong>€390</strong>. Written report, prioritised fix list, fixed quote. Credited in full if you go ahead. <a href="https://convertixdigital.com/en/audit?utm_source=ship-hub&utm_content=launch">See the audit →</a></p>
+<p class="vat">No VAT added: Convertix Digital is not VAT-registered (Art. 94(1) ZDDV-1).</p>
+</section>
+<section class="more-checklists wrap" aria-labelledby="more-heading">
+<h2 id="more-heading">More checklists</h2>
+<div class="episode-grid"><a class="card" href="../docs/">
+<span class="card-num">#8</span>
+<span class="keyword">DOCS</span>
+<h3>4 docs before anyone touches your codebase</h3>
+<p class="card-promise">The 4 files that stop newcomers guessing.</p>
+<span class="card-date">14 Nov 2026</span>
+</a><a class="card" href="../pricing/">
+<span class="card-num">#7</span>
+<span class="keyword">PRICING</span>
+<h3>How I'd price a SaaS today</h3>
+<p class="card-promise">5 deliberate pricing calls, with public numbers.</p>
+<span class="card-date">12 Nov 2026</span>
+</a><a class="card" href="../seo/">
+<span class="card-num">#6</span>
+<span class="keyword">SEO</span>
+<h3>Every redesign I ship starts with a 301 map</h3>
+<p class="card-promise">Relaunch without losing the traffic you've earned.</p>
+<span class="card-date">10 Nov 2026</span>
+</a></div></section>
+</main>
+<footer class="site-footer wrap">
+<nav aria-label="Footer">
+<a href="../privacy/">Privacy</a>
+<a href="../imprint/">Imprint</a>
+<a href="#">Instagram</a>
+</nav>
+<p>© 2026 Rados Budisa · Examples use example.com; no client data.</p>
+</footer>
+<script src="../assets/main.js" defer></script>
+</body>
+</html>

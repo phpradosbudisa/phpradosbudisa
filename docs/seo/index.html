@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Every redesign I ship starts with a 301 map · Ship</title>
+<meta name="description" content="Relaunch without losing the traffic you've earned.">
+<link rel="canonical" href="https://phpradosbudisa.github.io/seo/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Every redesign I ship starts with a 301 map · Ship">
+<meta property="og:description" content="Relaunch without losing the traffic you've earned.">
+<meta property="og:url" content="https://phpradosbudisa.github.io/seo/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Every redesign I ship starts with a 301 map · Ship">
+<meta name="twitter:description" content="Relaunch without losing the traffic you've earned.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<link href="https://api.fontshare.com/v2/css?f[]=geist-mono@400,500,600,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/styles.css">
+<link rel="stylesheet" href="../assets/print.css" media="print">
+</head><body data-episode="seo">
+<a class="skip-link" href="#main">Skip to content</a>
+<a class="home-link" href="../">← All checklists</a><header class="site-header wrap">
+<div class="header-inner">
+<img src="../assets/avatar_circle.png" width="72" height="72" alt="">
+<div class="header-text">
+<p class="tagline"><strong>Rados Budisa</strong> · 20 years shipping software</p>
+</div>
+</div>
+</header>
+<main id="main" class="wrap">
+<article>
+<div class="episode-hero">
+<h1>Every redesign I ship starts with a 301 map</h1>
+<p class="episode-promise">Relaunch without losing the traffic you've earned.</p>
+<p class="episode-meta">From the post on 10 Nov 2026</p>
+</div>
+<section class="checklist" aria-labelledby="checklist-heading">
+<h2 id="checklist-heading">Full checklist</h2><p class="lead">A pattern I've seen more times than I can count: new design, new CMS, cleaner URLs. Launch day goes fine. Then search traffic slides, week after week.</p><p class="lead">What breaks in prod: no redirects. Every URL Google had indexed, and every backlink the business earned over years, now returns a 404.</p><p class="lead">That's why the 301 map is the first deliverable on every redesign I ship, before any design work:</p><ol><li><input type="checkbox" id="seo-0" data-item="seo-0" aria-label="Checklist item"><label for="seo-0"><strong>Collect every old URL</strong><ul><li>Old sitemap.xml</li><li>Analytics: landing pages from the last 12 months</li><li>Search Console: pages with impressions</li><li>Backlink export (pages other sites link to)</li><li>Server logs, if you have them</li></ul></label></li><li><input type="checkbox" id="seo-1" data-item="seo-1" aria-label="Checklist item"><label for="seo-1"><strong>Map 1:1</strong> Each old URL → the closest new page. Don't send everything to the homepage; Google treats mass homepage redirects like soft 404s.</label></li><li><input type="checkbox" id="seo-2" data-item="seo-2" aria-label="Checklist item"><label for="seo-2"><strong>Implement properly</strong><ul><li>Server-side 301s, not JavaScript or meta refresh.</li><li>One hop. No chains (A → B → C) and no loops.</li><li>Update internal links, canonical tags and the sitemap to the new URLs.</li></ul></label></li><li><input type="checkbox" id="seo-3" data-item="seo-3" aria-label="Checklist item"><label for="seo-3"><strong>Keep them</strong><ul><li>Google says at least a year. I keep them indefinitely.</li><li>New domain? Also use Search Console's Change of Address tool.</li></ul></label></li><li><input type="checkbox" id="seo-4" data-item="seo-4" aria-label="Checklist item"><label for="seo-4"><strong>Watch it</strong><ul><li>Crawl the old URL list after launch: every one should return a single 301 to a 200.</li><li>Check 404s and Search Console indexing weekly for 8 weeks.</li></ul> Redirects stop the loss. Recovery still takes weeks, not days.</label></li></ol><p class="lead">My call: the map costs a day before design starts. I put it first on every redesign, ahead of any pixels. A redesign is a migration. Treat it like one.</p></section>
+<section class="prompt-section" aria-labelledby="prompt-heading">
+<h2 id="prompt-heading">Copy-paste prompt</h2>
+<div class="copy-row">
+<button type="button" data-copy-target="prompt-seo">Copy prompt</button>
+<span class="hint">Paste into your coding assistant.</span>
+</div>
+<pre class="prompt-block" id="prompt-seo">Here is my old URL list and new sitemap. Produce a 1:1 redirect map (old, new, 301), flag URLs with no good match, detect chains and loops, and output it in &lt;server/platform&gt; format.</pre>
+</section>
+<section class="sources" aria-labelledby="sources-heading">
+<h2 id="sources-heading">Official sources</h2><ul><li><a href="https://developers.google.com/search/docs/crawling-indexing/site-move-with-url-changes" rel="noopener noreferrer">Site moves with URL changes</a><span>Google guidance on migrating URLs without losing signals.</span></li><li><a href="https://developers.google.com/search/docs/crawling-indexing/301-redirects" rel="noopener noreferrer">301 redirects</a><span>How Google treats permanent redirects.</span></li><li><a href="https://support.google.com/webmasters/answer/9370220" rel="noopener noreferrer">Change of Address tool</a><span>Search Console tool for domain moves.</span></li></ul></section>
+</article>
+<section class="cta-soft wrap" aria-labelledby="cta-seo">
+<h2 id="cta-seo" class="visually-hidden">Convertix audit</h2>
+<p><strong>Need it done?</strong> Convertix launch audit, <strong>€390</strong>. Written report, prioritised fix list, fixed quote. Credited in full if you go ahead. <a href="https://convertixdigital.com/en/audit?utm_source=ship-hub&utm_content=seo">See the audit →</a></p>
+<p class="vat">No VAT added: Convertix Digital is not VAT-registered (Art. 94(1) ZDDV-1).</p>
+</section>
+<section class="more-checklists wrap" aria-labelledby="more-heading">
+<h2 id="more-heading">More checklists</h2>
+<div class="episode-grid"><a class="card" href="../docs/">
+<span class="card-num">#8</span>
+<span class="keyword">DOCS</span>
+<h3>4 docs before anyone touches your codebase</h3>
+<p class="card-promise">The 4 files that stop newcomers guessing.</p>
+<span class="card-date">14 Nov 2026</span>
+</a><a class="card" href="../pricing/">
+<span class="card-num">#7</span>
+<span class="keyword">PRICING</span>
+<h3>How I'd price a SaaS today</h3>
+<p class="card-promise">5 deliberate pricing calls, with public numbers.</p>
+<span class="card-date">12 Nov 2026</span>
+</a><a class="card" href="../email/">
+<span class="card-num">#5</span>
+<span class="keyword">EMAIL</span>
+<h3>Your emails land in spam. Fix 3 records.</h3>
+<p class="card-promise">SPF, DKIM and DMARC set up correctly, plus the Gmail/Yahoo rules.</p>
+<span class="card-date">9 Nov 2026</span>
+</a></div></section>
+</main>
+<footer class="site-footer wrap">
+<nav aria-label="Footer">
+<a href="../privacy/">Privacy</a>
+<a href="../imprint/">Imprint</a>
+<a href="#">Instagram</a>
+</nav>
+<p>© 2026 Rados Budisa · Examples use example.com; no client data.</p>
+</footer>
+<script src="../assets/main.js" defer></script>
+</body>
+</html>

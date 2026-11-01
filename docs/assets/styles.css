@@ -1,0 +1,517 @@
+:root {
+  --bg1: #f8e1f4;
+  --bg2: #e7defb;
+  --ink: #16131b;
+  --mut: #4b4454;
+  --hl: #d9f94a;
+  --chip: #ffffff;
+  --line: rgba(22, 19, 27, 0.1);
+  --code: #16131b;
+  --codetx: #f4effa;
+  --max: 42rem;
+  --wide: 72rem;
+  --radius: 16px;
+  --shadow: 0 6px 18px rgba(80, 40, 110, 0.08);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: Inter, system-ui, sans-serif;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: var(--ink);
+  background: linear-gradient(165deg, var(--bg1) 0%, var(--bg2) 100%);
+  background-attachment: fixed;
+  -webkit-font-smoothing: antialiased;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+a {
+  color: var(--ink);
+  text-underline-offset: 0.15em;
+}
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible {
+  outline: 3px solid var(--ink);
+  outline-offset: 2px;
+}
+
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  background: var(--chip);
+  padding: 0.5rem 1rem;
+  z-index: 100;
+}
+
+.skip-link:focus {
+  left: 0.5rem;
+  top: 0.5rem;
+}
+
+.wrap {
+  width: min(100% - 2rem, var(--wide));
+  margin-inline: auto;
+}
+
+.site-header {
+  padding: 1.5rem 0 1rem;
+}
+
+.header-inner {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.header-inner img {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  border: 3px solid rgba(255, 255, 255, 0.85);
+  box-shadow: var(--shadow);
+  flex-shrink: 0;
+}
+
+.header-text h1 {
+  margin: 0 0 0.25rem;
+  font-family: "DM Serif Display", Georgia, serif;
+  font-size: clamp(1.75rem, 5vw, 2.25rem);
+  font-weight: 400;
+  line-height: 1.1;
+  letter-spacing: -0.015em;
+}
+
+.tagline {
+  margin: 0;
+  color: var(--mut);
+  font-size: 0.95rem;
+}
+
+.ig-link {
+  display: inline-block;
+  margin-top: 0.35rem;
+  font-family: "Geist Mono", ui-monospace, monospace;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--mut);
+}
+
+.intro {
+  max-width: var(--max);
+  margin: 0 0 2rem;
+  font-size: 1.05rem;
+}
+
+.filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.filter-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.45rem 0.85rem;
+  background: var(--chip);
+  border: 1.5px solid var(--line);
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-decoration: none;
+  box-shadow: var(--shadow);
+}
+
+.filter-chip[aria-current="true"] {
+  background: var(--ink);
+  color: #fff;
+  border-color: var(--ink);
+}
+
+.episode-grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 640px) {
+  .episode-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 960px) {
+  .episode-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1.25rem;
+  background: var(--chip);
+  border: 1.5px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.15s ease;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+}
+
+.card-num {
+  font-family: "Geist Mono", ui-monospace, monospace;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--mut);
+}
+
+.card h2 {
+  margin: 0;
+  font-family: "DM Serif Display", Georgia, serif;
+  font-size: 1.25rem;
+  font-weight: 400;
+  line-height: 1.15;
+}
+
+.keyword {
+  display: inline-block;
+  align-self: flex-start;
+  padding: 0.2rem 0.55rem;
+  background: var(--hl);
+  border-radius: 8px;
+  font-family: "Geist Mono", ui-monospace, monospace;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.card-promise {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--mut);
+  flex: 1;
+}
+
+.card-date {
+  font-size: 0.8rem;
+  color: var(--mut);
+}
+
+.projects {
+  margin: 2rem 0;
+  padding: 1.25rem;
+  background: rgba(255, 255, 255, 0.55);
+  border: 1.5px solid var(--line);
+  border-radius: var(--radius);
+}
+
+.projects h2 {
+  margin: 0 0 0.75rem;
+  font-family: "DM Serif Display", Georgia, serif;
+  font-size: 1.35rem;
+  font-weight: 400;
+}
+
+.projects ul {
+  margin: 0;
+  padding-left: 1.25rem;
+}
+
+.cta-soft {
+  margin: 2.5rem 0;
+  padding: 1.5rem;
+  background: var(--chip);
+  border: 1.5px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.cta-soft p {
+  margin: 0 0 0.75rem;
+}
+
+.cta-soft .vat {
+  margin-top: 0.75rem;
+  font-size: 0.85rem;
+  color: var(--mut);
+}
+
+.episode-hero {
+  max-width: var(--max);
+  margin-bottom: 2rem;
+}
+
+.episode-hero h1 {
+  margin: 0 0 0.5rem;
+  font-family: "DM Serif Display", Georgia, serif;
+  font-size: clamp(1.85rem, 5vw, 2.5rem);
+  font-weight: 400;
+  line-height: 1.08;
+  letter-spacing: -0.015em;
+}
+
+.episode-promise {
+  font-size: 1.1rem;
+  margin: 0 0 0.5rem;
+}
+
+.episode-meta {
+  font-family: "Geist Mono", ui-monospace, monospace;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--mut);
+}
+
+.checklist {
+  max-width: var(--max);
+  margin-bottom: 2.5rem;
+}
+
+.checklist h2 {
+  font-family: "DM Serif Display", Georgia, serif;
+  font-size: 1.35rem;
+  font-weight: 400;
+  margin: 1.75rem 0 0.75rem;
+}
+
+.checklist h2:first-child {
+  margin-top: 0;
+}
+
+.checklist p.lead {
+  margin: 0 0 1rem;
+}
+
+.checklist ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.checklist li {
+  display: flex;
+  gap: 0.75rem;
+  align-items: flex-start;
+  margin-bottom: 0.85rem;
+  padding: 0.75rem;
+  background: rgba(255, 255, 255, 0.45);
+  border-radius: 12px;
+  border: 1px solid var(--line);
+}
+
+.checklist li ul {
+  margin: 0.35rem 0 0;
+  padding-left: 1.1rem;
+  list-style: disc;
+}
+
+.checklist li ul li {
+  display: list-item;
+  padding: 0;
+  margin-bottom: 0.25rem;
+  background: none;
+  border: none;
+}
+
+.checklist input[type="checkbox"] {
+  width: 1.25rem;
+  height: 1.25rem;
+  margin-top: 0.15rem;
+  flex-shrink: 0;
+  accent-color: var(--ink);
+}
+
+.prompt-section {
+  max-width: var(--max);
+  margin-bottom: 2.5rem;
+}
+
+.prompt-section h2 {
+  font-family: "DM Serif Display", Georgia, serif;
+  font-size: 1.35rem;
+  font-weight: 400;
+  margin: 0 0 0.75rem;
+}
+
+.copy-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+.copy-row button {
+  font-family: Inter, sans-serif;
+  font-weight: 600;
+  font-size: 0.95rem;
+  padding: 0.55rem 1.1rem;
+  border: 1.5px solid var(--ink);
+  border-radius: 10px;
+  background: var(--hl);
+  color: var(--ink);
+  cursor: pointer;
+}
+
+.copy-row .hint {
+  font-size: 0.85rem;
+  color: var(--mut);
+}
+
+.prompt-block {
+  margin: 0;
+  padding: 1rem 1.1rem;
+  background: var(--code);
+  color: var(--codetx);
+  border-radius: 14px;
+  font-family: "Geist Mono", ui-monospace, monospace;
+  font-size: 0.82rem;
+  line-height: 1.55;
+  white-space: pre-wrap;
+  overflow-x: auto;
+}
+
+.sources {
+  max-width: var(--max);
+  margin-bottom: 2.5rem;
+}
+
+.sources h2 {
+  font-family: "DM Serif Display", Georgia, serif;
+  font-size: 1.35rem;
+  font-weight: 400;
+  margin: 0 0 0.75rem;
+}
+
+.sources ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.sources li {
+  margin-bottom: 0.85rem;
+  padding-bottom: 0.85rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.sources li:last-child {
+  border-bottom: none;
+}
+
+.sources a {
+  font-weight: 600;
+}
+
+.sources span {
+  display: block;
+  font-size: 0.9rem;
+  color: var(--mut);
+  margin-top: 0.15rem;
+}
+
+.more-checklists {
+  margin: 2.5rem 0;
+}
+
+.more-checklists h2 {
+  font-family: "DM Serif Display", Georgia, serif;
+  font-size: 1.35rem;
+  font-weight: 400;
+  margin: 0 0 1rem;
+}
+
+.legal-page {
+  max-width: var(--max);
+}
+
+.legal-page h1 {
+  font-family: "DM Serif Display", Georgia, serif;
+  font-weight: 400;
+  font-size: 2rem;
+}
+
+.legal-page h2 {
+  font-family: "DM Serif Display", Georgia, serif;
+  font-weight: 400;
+  font-size: 1.25rem;
+  margin-top: 1.5rem;
+}
+
+.not-found {
+  text-align: center;
+  padding: 4rem 1rem;
+}
+
+.not-found h1 {
+  font-family: "DM Serif Display", Georgia, serif;
+  font-weight: 400;
+}
+
+.site-footer {
+  margin-top: 3rem;
+  padding: 1.5rem 0 2rem;
+  border-top: 1px solid var(--line);
+  font-size: 0.85rem;
+  color: var(--mut);
+}
+
+.site-footer nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1.25rem;
+  margin-bottom: 0.75rem;
+}
+
+.site-footer a {
+  color: var(--mut);
+}
+
+.home-link {
+  display: inline-block;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}

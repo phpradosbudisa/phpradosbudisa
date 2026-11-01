@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Monolith first. Still my call. · Ship</title>
+<meta name="description" content="When one deployable is right, and the 4 signals that justify a split.">
+<link rel="canonical" href="https://phpradosbudisa.github.io/monolith/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Monolith first. Still my call. · Ship">
+<meta property="og:description" content="When one deployable is right, and the 4 signals that justify a split.">
+<meta property="og:url" content="https://phpradosbudisa.github.io/monolith/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Monolith first. Still my call. · Ship">
+<meta name="twitter:description" content="When one deployable is right, and the 4 signals that justify a split.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<link href="https://api.fontshare.com/v2/css?f[]=geist-mono@400,500,600,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/styles.css">
+<link rel="stylesheet" href="../assets/print.css" media="print">
+</head><body data-episode="monolith">
+<a class="skip-link" href="#main">Skip to content</a>
+<a class="home-link" href="../">← All checklists</a><header class="site-header wrap">
+<div class="header-inner">
+<img src="../assets/avatar_circle.png" width="72" height="72" alt="">
+<div class="header-text">
+<p class="tagline"><strong>Rados Budisa</strong> · 20 years shipping software</p>
+</div>
+</div>
+</header>
+<main id="main" class="wrap">
+<article>
+<div class="episode-hero">
+<h1>Monolith first. Still my call.</h1>
+<p class="episode-promise">When one deployable is right, and the 4 signals that justify a split.</p>
+<p class="episode-meta">From the post on 7 Nov 2026</p>
+</div>
+<section class="checklist" aria-labelledby="checklist-heading">
+<h2 id="checklist-heading">Full checklist</h2><h2>What I mean</h2><p class="lead">It's 2026 and I still start almost everything as a monolith. Deliberately.</p><p class="lead">What I mean: one deployable, one database, and modules with hard boundaries inside it. Not a ball of mud.</p><h2>What it buys</h2><ol><li><input type="checkbox" id="monolith-0" data-item="monolith-0" aria-label="Checklist item"><label for="monolith-0">One deploy, one log stream, one thing to monitor.</label></li><li><input type="checkbox" id="monolith-1" data-item="monolith-1" aria-label="Checklist item"><label for="monolith-1">Real database transactions instead of distributed sagas.</label></li><li><input type="checkbox" id="monolith-2" data-item="monolith-2" aria-label="Checklist item"><label for="monolith-2">Refactors your editor and tests can follow end to end.</label></li><li><input type="checkbox" id="monolith-3" data-item="monolith-3" aria-label="Checklist item"><label for="monolith-3">A small team that can hold the whole system in their heads.</label></li></ol><h2>What it costs</h2><ol><li><input type="checkbox" id="monolith-4" data-item="monolith-4" aria-label="Checklist item"><label for="monolith-4">You scale everything together.</label></li><li><input type="checkbox" id="monolith-5" data-item="monolith-5" aria-label="Checklist item"><label for="monolith-5">Boundaries only hold if you enforce them.</label></li><li><input type="checkbox" id="monolith-6" data-item="monolith-6" aria-label="Checklist item"><label for="monolith-6">What breaks in prod: a bad deploy takes everything down at once. So a one-step rollback isn't optional.</label></li></ol><h2>4 split signals</h2><ol><li><input type="checkbox" id="monolith-7" data-item="monolith-7" aria-label="Checklist item"><label for="monolith-7">A part with a very different scaling profile: video, media processing, heavy batch jobs.</label></li><li><input type="checkbox" id="monolith-8" data-item="monolith-8" aria-label="Checklist item"><label for="monolith-8">A part with its own release cadence or its own team.</label></li><li><input type="checkbox" id="monolith-9" data-item="monolith-9" aria-label="Checklist item"><label for="monolith-9">Hard isolation needs: compliance scope, running untrusted code.</label></li><li><input type="checkbox" id="monolith-10" data-item="monolith-10" aria-label="Checklist item"><label for="monolith-10">Measured pain: profiling and incident data, not a diagram of the future.</label></li></ol><h2>Keep the split cheap</h2><ol><li><input type="checkbox" id="monolith-11" data-item="monolith-11" aria-label="Checklist item"><label for="monolith-11">Each module owns its tables. Nobody else reads them directly.</label></li><li><input type="checkbox" id="monolith-12" data-item="monolith-12" aria-label="Checklist item"><label for="monolith-12">Modules talk through an interface, so the call can become a network call later.</label></li><li><input type="checkbox" id="monolith-13" data-item="monolith-13" aria-label="Checklist item"><label for="monolith-13">Background work goes through a queue from day one.</label></li><li><input type="checkbox" id="monolith-14" data-item="monolith-14" aria-label="Checklist item"><label for="monolith-14">The same rule applies to product scope. Launch the smallest scope that can prove the idea, and widen it on evidence, not on a roadmap. Hard limits help: Urejamo, the local services marketplace I'm building, sends each inquiry to at most 3 providers. Fewer, better matches beat more noise.</label></li></ol><p class="lead">My call: I trade independent scaling for speed and one place to debug. Until the evidence says otherwise, I'd make that call again.</p></section>
+<section class="prompt-section" aria-labelledby="prompt-heading">
+<h2 id="prompt-heading">Copy-paste prompt</h2>
+<div class="copy-row">
+<button type="button" data-copy-target="prompt-monolith">Copy prompt</button>
+<span class="hint">Paste into your coding assistant.</span>
+</div>
+<pre class="prompt-block" id="prompt-monolith">Map this codebase into modules: which tables each one reads and writes, and every cross-module table access. Propose boundaries so each module owns its tables. No service split.</pre>
+</section>
+<section class="sources" aria-labelledby="sources-heading">
+<h2 id="sources-heading">Official sources</h2><ul><li><a href="https://martinfowler.com/bliki/MonolithFirst.html" rel="noopener noreferrer">MonolithFirst</a><span>Martin Fowler on starting with a monolith.</span></li><li><a href="https://martinfowler.com/bliki/MicroservicePrerequisites.html" rel="noopener noreferrer">Microservice Prerequisites</a><span>When microservices are worth the complexity.</span></li></ul></section>
+</article>
+<section class="cta-soft wrap" aria-labelledby="cta-monolith">
+<h2 id="cta-monolith" class="visually-hidden">Convertix audit</h2>
+<p><strong>Need it done?</strong> Convertix launch audit, <strong>€390</strong>. Written report, prioritised fix list, fixed quote. Credited in full if you go ahead. <a href="https://convertixdigital.com/en/audit?utm_source=ship-hub&utm_content=monolith">See the audit →</a></p>
+<p class="vat">No VAT added: Convertix Digital is not VAT-registered (Art. 94(1) ZDDV-1).</p>
+</section>
+<section class="more-checklists wrap" aria-labelledby="more-heading">
+<h2 id="more-heading">More checklists</h2>
+<div class="episode-grid"><a class="card" href="../docs/">
+<span class="card-num">#8</span>
+<span class="keyword">DOCS</span>
+<h3>4 docs before anyone touches your codebase</h3>
+<p class="card-promise">The 4 files that stop newcomers guessing.</p>
+<span class="card-date">14 Nov 2026</span>
+</a><a class="card" href="../pricing/">
+<span class="card-num">#7</span>
+<span class="keyword">PRICING</span>
+<h3>How I'd price a SaaS today</h3>
+<p class="card-promise">5 deliberate pricing calls, with public numbers.</p>
+<span class="card-date">12 Nov 2026</span>
+</a><a class="card" href="../seo/">
+<span class="card-num">#6</span>
+<span class="keyword">SEO</span>
+<h3>Every redesign I ship starts with a 301 map</h3>
+<p class="card-promise">Relaunch without losing the traffic you've earned.</p>
+<span class="card-date">10 Nov 2026</span>
+</a></div></section>
+</main>
+<footer class="site-footer wrap">
+<nav aria-label="Footer">
+<a href="../privacy/">Privacy</a>
+<a href="../imprint/">Imprint</a>
+<a href="#">Instagram</a>
+</nav>
+<p>© 2026 Rados Budisa · Examples use example.com; no client data.</p>
+</footer>
+<script src="../assets/main.js" defer></script>
+</body>
+</html>
