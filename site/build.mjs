@@ -40,7 +40,7 @@ function countChecklistItems(ep) {
 
 function outboundUrl(rawUrl, campaign, content) {
   const u = new URL(rawUrl);
-  u.searchParams.set("utm_source", "burad_ships_hub");
+  u.searchParams.set("utm_source", "3am_deploy");
   u.searchParams.set("utm_medium", "referral");
   u.searchParams.set("utm_campaign", campaign);
   u.searchParams.set("utm_content", content);
@@ -87,6 +87,25 @@ function personJsonLd() {
   };
 }
 
+function homeJsonLd() {
+  return {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Person",
+        name: SITE.name,
+        url: `${SITE.baseUrl}/`,
+        sameAs: [SITE.instagram],
+      },
+      {
+        "@type": "WebSite",
+        name: SITE.brandName,
+        url: `${SITE.baseUrl}/`,
+      },
+    ],
+  };
+}
+
 function articleJsonLd(ep) {
   return {
     "@context": "https://schema.org",
@@ -97,6 +116,10 @@ function articleJsonLd(ep) {
       "@type": "Person",
       name: SITE.name,
       sameAs: [SITE.instagram],
+    },
+    publisher: {
+      "@type": "Organization",
+      name: SITE.brandName,
     },
   };
 }
@@ -123,7 +146,7 @@ function headMeta({
   ogType = "website",
 }) {
   const prefix = assetPrefix(depth);
-  const fullTitle = title === SITE.title ? title : `${title} · Ship`;
+  const fullTitle = title === SITE.title ? title : `${title} · ${SITE.brandName}`;
   const ogImage = ogImageUrl(pageSlug);
   let ogBlock = "";
   if (ogImage) {
@@ -146,6 +169,7 @@ function headMeta({
 <meta property="og:title" content="${esc(fullTitle)}">
 <meta property="og:description" content="${esc(description)}">
 <meta property="og:url" content="${esc(url)}">
+<meta property="og:site_name" content="${esc(SITE.brandName)}">
 ${ogBlock}
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="${esc(fullTitle)}">
@@ -177,7 +201,7 @@ function brandBar(depth) {
   return `<header class="wrap brand-bar">
 <a class="brand-link" href="${prefix}">
 <img class="brand-avatar" src="${prefix}assets/avatar_circle.png" width="48" height="48" alt="Portrait of ${esc(SITE.name)}">
-<span class="brand-name"><span class="hl">Ship</span></span>
+<span class="brand-name"><span class="hl">${esc(SITE.brandName)}</span></span>
 </a>
 </header>`;
 }
@@ -189,7 +213,7 @@ function homeHero(depth, pageSlug) {
 <div class="hero-layout">
 <img class="hero-avatar" src="${prefix}assets/avatar_circle.png" width="144" height="144" alt="Portrait of ${esc(SITE.name)}">
 <div>
-<h1 class="hero-title"><span class="hl">Ship</span></h1>
+<h1 class="hero-title"><span class="hl">${esc(SITE.brandName)}</span></h1>
 <p class="hero-sub">Stories from 8 years of shipping software: what breaks in prod and the call I make.</p>
 <p class="hero-bio">Senior developer · ${esc(SITE.positioning)}</p>
 <div class="pill-row">
@@ -425,12 +449,7 @@ ${ctaAudit(ep.slug, depth)}
 ${footer(depth, ep.slug)}
 ${pageScripts(depth)}
 </body>`;
-  const jsonLd =
-    episodeIsLive(ep) && !ep.introPage
-      ? articleJsonLd(ep)
-      : ep.introPage && episodeIsLive(ep)
-        ? personJsonLd()
-        : null;
+  const jsonLd = episodeIsLive(ep) && !ep.introPage ? articleJsonLd(ep) : null;
   return (
     headMeta({
       title: ep.title,
@@ -503,7 +522,7 @@ ${pageScripts(depth)}
       url,
       depth,
       pageSlug: "home",
-      jsonLd: personJsonLd(),
+      jsonLd: homeJsonLd(),
     }) +
     body +
     "\n</html>\n"
@@ -552,7 +571,7 @@ function notFoundPage() {
 ${brandBar(depth)}
 <main class="wrap not-found">
 <h1>Page not found</h1>
-<p>That page is not here. <a href="./">Back to Ship</a></p>
+<p>That page is not here. <a href="./">Back to ${esc(SITE.brandName)}</a></p>
 </main>
 ${ctaAudit("404", depth)}
 ${footer(depth, "404")}
@@ -629,7 +648,7 @@ const ogOut = path.join(outDir, "assets", "og");
 const ogPages = [
   {
     slug: "home",
-    headline: "Ship",
+    headline: SITE.brandName,
     subtitle: SITE.metaDescription,
   },
   ...EPISODES.filter((e) => episodeIsLive(e)).map((e) => ({

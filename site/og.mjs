@@ -1,6 +1,7 @@
 import fs from "fs";
 import path from "path";
 import { Resvg } from "@resvg/resvg-js";
+import { SITE } from "./episodes.mjs";
 
 function escXml(s) {
   return String(s)
@@ -34,6 +35,7 @@ export function generateOgImages({ pages, siteDir, outDir }) {
   const sansFont = path.join(siteDir, "assets", "fonts", "inter-400.woff2");
   fs.mkdirSync(outDir, { recursive: true });
 
+  const badge = escXml(SITE.brandName.toUpperCase());
   for (const page of pages) {
     const lines = wrapTitle(page.headline, 28);
     const tspans = lines
@@ -46,8 +48,8 @@ export function generateOgImages({ pages, siteDir, outDir }) {
     const svg = `<?xml version="1.0" encoding="UTF-8"?>
 <svg width="1200" height="630" viewBox="0 0 1200 630" xmlns="http://www.w3.org/2000/svg">
 <rect width="1200" height="630" fill="#faf8f5"/>
-<rect x="48" y="48" width="120" height="32" rx="8" fill="#d9f94a"/>
-<text x="60" y="70" font-family="Inter" font-size="14" font-weight="600" fill="#16131b">SHIP</text>
+<rect x="48" y="48" width="200" height="32" rx="8" fill="#d9f94a"/>
+<text x="60" y="70" font-family="Inter" font-size="13" font-weight="600" fill="#16131b">${badge}</text>
 <image href="data:image/png;base64,${avatarB64}" x="48" y="120" width="120" height="120" clip-path="url(#avclip)"/>
 <defs>
 <clipPath id="avclip"><circle cx="108" cy="180" r="60"/></clipPath>

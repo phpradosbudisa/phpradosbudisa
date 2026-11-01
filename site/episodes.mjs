@@ -3,7 +3,8 @@ import { WHY_EPISODE, applyStories } from "./stories.mjs";
 export const SITE = {
   baseUrl: "https://phpradosbudisa.github.io/phpradosbudisa",
   instagram: "https://www.instagram.com/burad.ships/",
-  title: "Ship: what actually breaks when you go live",
+  brandName: "3am Deploy",
+  title: "3am Deploy: what actually breaks when you go live",
   metaDescription:
     "Stories from 8 years of shipping software: what breaks in prod and the call I make.",
   name: "Rados Budisa",

@@ -11,7 +11,7 @@ export const WHY_EPISODE = {
   introPage: true,
   live: true,
   storyLede:
-    "After eight years of shipping APIs, dashboards, and mobile apps for my own products and for teams who need something live, the same failure modes keep showing up. Ship is where I write down what I actually check before go-live, with enough context to decide what applies to your stack.",
+    "After eight years of shipping APIs, dashboards, and mobile apps for my own products and for teams who need something live, the same failure modes keep showing up. 3am Deploy is where I write down what I actually check before go-live, with enough context to decide what applies to your stack.",
   introSections: [
     {
       heading: "Why this series exists",
