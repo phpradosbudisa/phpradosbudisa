@@ -311,6 +311,30 @@ button:focus-visible {
   max-width: 38rem;
 }
 
+.fine-print {
+  margin-bottom: var(--s5);
+}
+
+.fine-print-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-width: 38rem;
+  border-left: 3px solid var(--lilac);
+}
+
+.fine-print-list li {
+  padding: var(--s2) 0 var(--s2) var(--s3);
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  color: var(--mut);
+  border-bottom: 1px solid var(--border);
+}
+
+.fine-print-list li:last-child {
+  border-bottom: none;
+}
+
 .products-section {
   margin-bottom: var(--s5);
 }

@@ -77,13 +77,17 @@ function jsonLdScript(obj) {
   return `<script type="application/ld+json">${JSON.stringify(obj)}</script>`;
 }
 
+function personSameAs() {
+  return [SITE.instagram, SITE.linkedin];
+}
+
 function personJsonLd() {
   return {
     "@context": "https://schema.org",
     "@type": "Person",
     name: SITE.name,
     url: `${SITE.baseUrl}/`,
-    sameAs: [SITE.instagram],
+    sameAs: personSameAs(),
   };
 }
 
@@ -95,7 +99,7 @@ function homeJsonLd() {
         "@type": "Person",
         name: SITE.name,
         url: `${SITE.baseUrl}/`,
-        sameAs: [SITE.instagram],
+        sameAs: personSameAs(),
       },
       {
         "@type": "WebSite",
@@ -115,7 +119,7 @@ function articleJsonLd(ep) {
     author: {
       "@type": "Person",
       name: SITE.name,
-      sameAs: [SITE.instagram],
+      sameAs: personSameAs(),
     },
     publisher: {
       "@type": "Organization",
@@ -191,8 +195,9 @@ function footer(depth, pageSlug) {
   const prefix = assetPrefix(depth);
   const y = new Date().getFullYear();
   const ig = outboundHref(SITE.instagram, pageSlug, "instagram");
+  const li = outboundHref(SITE.linkedin, pageSlug, "linkedin");
   return `<footer class="site-footer wrap">
-<p>© ${y} ${esc(SITE.name)} · <a href="${prefix}privacy/">Privacy</a> · <a href="${ig}" data-outbound="instagram" rel="noopener noreferrer">Instagram</a> · Examples use example.com; no client data.</p>
+<p>© ${y} ${esc(SITE.name)} · <a href="${prefix}privacy/">Privacy</a> · <a href="${ig}" data-outbound="instagram" rel="noopener noreferrer">Instagram</a> · <a href="${li}" data-outbound="linkedin" rel="noopener noreferrer">LinkedIn</a> · Examples use example.com; no client data.</p>
 </footer>`;
 }
 
@@ -209,6 +214,7 @@ function brandBar(depth) {
 function homeHero(depth, pageSlug) {
   const prefix = assetPrefix(depth);
   const ig = outboundHref(SITE.instagram, pageSlug, "instagram");
+  const li = outboundHref(SITE.linkedin, pageSlug, "linkedin");
   return `<header class="hero wrap">
 <div class="hero-layout">
 <img class="hero-avatar" src="${prefix}assets/avatar_circle.png" width="144" height="144" alt="Portrait of ${esc(SITE.name)}">
@@ -218,11 +224,24 @@ function homeHero(depth, pageSlug) {
 <p class="hero-bio">Senior developer · ${esc(SITE.positioning)}</p>
 <div class="pill-row">
 <a class="pill" href="${ig}" data-outbound="instagram" rel="noopener noreferrer">Instagram</a>
+<a class="pill" href="${li}" data-outbound="linkedin" rel="noopener noreferrer">LinkedIn</a>
 <a class="pill" href="#products">Products</a>
 </div>
 </div>
 </div>
 </header>`;
+}
+
+function homeFinePrint() {
+  const lines = SITE.finePrint || [];
+  let items = "";
+  for (const line of lines) {
+    items += `<li>${esc(line)}</li>`;
+  }
+  return `<section class="fine-print wrap" aria-labelledby="fine-print-heading">
+<p class="section-label" id="fine-print-heading">Fine print</p>
+<ul class="fine-print-list">${items}</ul>
+</section>`;
 }
 
 function ctaAudit(pageSlug, depth) {
@@ -500,6 +519,7 @@ function homePage() {
   const body = `<body data-page="home">
 <a class="skip-link" href="#main">Skip to content</a>
 ${homeHero(depth, "home")}
+${homeFinePrint()}
 <main id="main" class="wrap">
 <p class="intro-block">${esc(SITE.intro)}</p>
 <section class="products-section" id="products" aria-labelledby="products-heading">
