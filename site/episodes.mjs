@@ -5,9 +5,9 @@ export const SITE = {
   instagram: "https://www.instagram.com/inventive.dev/",
   title: "Ship: what actually breaks when you go live",
   metaDescription:
-    "Free checklists from 20 years of shipping software. One page per topic, with a copy-paste prompt and official sources.",
+    "Free checklists from 8 years of shipping software. One page per topic, with a copy-paste prompt and official sources.",
   name: "Rados Budisa",
-  positioning: "20 years shipping software",
+  positioning: "8 years shipping software",
   intro:
     "The posts introduce the topic. These pages are the reference you come back to.",
 };
@@ -447,7 +447,7 @@ const EPISODE_LIST = [
       {
         title: null,
         lead: [
-          "20 years of shipping software, and launch day still breaks in the same places. This is the list I go through before anything goes live, mine or a client's.",
+          "Eight years of shipping software, and launch day still breaks in the same places. This is the list I go through before anything goes live, mine or a client's.",
           "What breaks in prod is rarely the feature. It's the cert nobody renews, the reset email in spam, the migration that locks a table.",
         ],
         items: [],

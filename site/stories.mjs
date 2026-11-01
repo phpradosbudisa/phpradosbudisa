@@ -7,10 +7,10 @@ export const WHY_EPISODE = {
   dateIso: "2026-11-01",
   title: "Why I'm sharing this",
   promise:
-    "Twenty years of shipping software, and the patterns that still decide launch week.",
+    "Eight years of shipping software, and the patterns that still decide launch week.",
   introPage: true,
   storyLede:
-    "After two decades of shipping APIs, dashboards, and mobile apps for my own products and for teams who need something live, the same failure modes keep showing up. Ship is where I write down what I actually check before go-live, with enough context to decide what applies to your stack.",
+    "After eight years of shipping APIs, dashboards, and mobile apps for my own products and for teams who need something live, the same failure modes keep showing up. Ship is where I write down what I actually check before go-live, with enough context to decide what applies to your stack.",
   introSections: [
     {
       heading: "Why this series exists",
