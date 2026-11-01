@@ -3,15 +3,15 @@
     background: #fff !important;
     color: #16131b;
   }
-  .site-header,
-  .cta-soft,
-  .more-checklists,
-  .filter-bar,
-  .copy-row button,
+  .pill-row,
+  .cta-audit,
+  .episode-nav,
+  .prompt-toolbar button,
   .site-footer {
     display: none !important;
   }
-  .checklist input {
+  .checklist-row input:checked ~ .check-ui {
+    background: #d9f94a !important;
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
   }
@@ -20,7 +20,7 @@
     font-size: 0.85em;
     color: #4b4454;
   }
-  .prompt-block {
+  .prompt-card {
     break-inside: avoid;
   }
 }

@@ -17,111 +17,51 @@
 <link rel="stylesheet" href="assets/print.css" media="print">
 </head><body>
 <a class="skip-link" href="#main">Skip to content</a>
-<header class="site-header wrap">
-<div class="header-inner">
-<img src="assets/avatar_circle.png" width="72" height="72" alt="">
-<div class="header-text">
-<p class="tagline"><strong>Rados Budisa</strong> · 20 years shipping software</p>
+<header class="hero wrap">
+<div class="hero-layout">
+<img class="hero-avatar" src="assets/avatar_circle.png" width="144" height="144" alt="">
+<div>
+<h1 class="hero-title"><span class="hl">Ship</span></h1>
+<p class="hero-sub">what actually breaks when you go live</p>
+<p class="hero-bio">Senior developer · 20 years shipping software</p>
+<p class="hero-meta">Free checklists from 20 years of shipping software. One page per topic, with a copy-paste prompt and official sources.</p>
+<div class="pill-row">
+<a class="pill" href="https://www.instagram.com/inventive.dev/" rel="noopener noreferrer">Instagram</a>
+<a class="pill" href="#projects">Projects</a>
+</div>
 </div>
 </div>
 </header>
 <main id="main" class="wrap">
-<div class="header-text" style="margin-bottom:1.5rem">
-<h1>Ship: what actually breaks when you go live</h1>
-<p class="tagline">Senior developer · 20 years shipping software</p>
-<p class="tagline">Free checklists from 20 years of shipping software. One page per topic, with a copy-paste prompt and official sources.</p>
-<a class="ig-link" href="https://www.instagram.com/inventive.dev/" rel="noopener noreferrer">Instagram</a>
+<p class="intro-block">The posts introduce the topic. These pages are the reference you come back to.</p>
+<section class="projects-section" id="projects" aria-labelledby="projects-heading">
+<p class="section-label" id="projects-heading">Projects</p>
+<div class="project-grid">
+<a class="project-card" href="https://convertixdigital.com" rel="noopener noreferrer">
+<div class="project-card-head"><h3>Convertix</h3><span class="arrow" aria-hidden="true">→</span></div>
+<p>Launch studio.</p>
+<span class="project-domain">convertixdigital.com</span>
+</a>
+<a class="project-card" href="https://urejamo.si" rel="noopener noreferrer">
+<div class="project-card-head"><h3>Urejamo.si</h3><span class="arrow" aria-hidden="true">→</span></div>
+<p>Local services marketplace.</p>
+<span class="project-domain">urejamo.si</span>
+</a>
 </div>
-<p class="intro">The posts introduce the topic. These pages are the reference you come back to.</p>
-<section class="projects" aria-labelledby="projects-heading">
-<h2 id="projects-heading">Projects</h2>
-<ul>
-<li><a href="https://convertixdigital.com" rel="noopener noreferrer">Convertix</a> — launch studio</li>
-<li><a href="https://urejamo.si" rel="noopener noreferrer">Urejamo.si</a> — local services marketplace</li>
-</ul>
 </section>
-<div class="filter-bar" role="navigation" aria-label="Filter by kind"><a class="filter-chip" href="#" data-filter="all">All</a><a class="filter-chip" href="#" data-filter="checklist">Checklist</a><a class="filter-chip" href="#" data-filter="war-story">War story</a><a class="filter-chip" href="#" data-filter="tradeoff">Tradeoff</a><a class="filter-chip" href="#" data-filter="build-in-public">Build in public</a></div>
-<div class="episode-grid" id="episode-grid"><a class="card" href="docs/" data-kind="checklist">
-<span class="card-num">#8</span>
-<span class="keyword">DOCS</span>
-<h2>4 docs before anyone touches your codebase</h2>
-<p class="card-promise">The 4 files that stop newcomers guessing.</p>
-<span class="card-date">14 Nov 2026</span>
-</a><a class="card" href="pricing/" data-kind="build-in-public">
-<span class="card-num">#7</span>
-<span class="keyword">PRICING</span>
-<h2>How I'd price a SaaS today</h2>
-<p class="card-promise">5 deliberate pricing calls, with public numbers.</p>
-<span class="card-date">12 Nov 2026</span>
-</a><a class="card" href="seo/" data-kind="checklist">
-<span class="card-num">#6</span>
-<span class="keyword">SEO</span>
-<h2>Every redesign I ship starts with a 301 map</h2>
-<p class="card-promise">Relaunch without losing the traffic you've earned.</p>
-<span class="card-date">10 Nov 2026</span>
-</a><a class="card" href="email/" data-kind="checklist">
-<span class="card-num">#5</span>
-<span class="keyword">EMAIL</span>
-<h2>Your emails land in spam. Fix 3 records.</h2>
-<p class="card-promise">SPF, DKIM and DMARC set up correctly, plus the Gmail/Yahoo rules.</p>
-<span class="card-date">9 Nov 2026</span>
-</a><a class="card" href="monolith/" data-kind="tradeoff">
-<span class="card-num">#4</span>
-<span class="keyword">MONOLITH</span>
-<h2>Monolith first. Still my call.</h2>
-<p class="card-promise">When one deployable is right, and the 4 signals that justify a split.</p>
-<span class="card-date">7 Nov 2026</span>
-</a><a class="card" href="security/" data-kind="checklist">
-<span class="card-num">#3</span>
-<span class="keyword">SECURITY</span>
-<h2>7 security holes I find in almost every audit</h2>
-<p class="card-promise">Check your app for the 7 holes before someone else does.</p>
-<span class="card-date">5 Nov 2026</span>
-</a><a class="card" href="backup/" data-kind="war-story">
-<span class="card-num">#2</span>
-<span class="keyword">BACKUP</span>
-<h2>Backups are not restores</h2>
-<p class="card-promise">A monthly restore drill you can run in an hour.</p>
-<span class="card-date">3 Nov 2026</span>
-</a><a class="card" href="launch/" data-kind="checklist">
-<span class="card-num">#1</span>
-<span class="keyword">LAUNCH</span>
-<h2>20 things I check before any app goes live</h2>
-<p class="card-promise">The pre-launch pass that keeps launch week quiet.</p>
-<span class="card-date">2 Nov 2026</span>
-</a></div>
-<section class="cta-soft wrap" aria-labelledby="cta-home">
+<section class="episode-list-section" aria-labelledby="episodes-heading">
+<p class="section-label" id="episodes-heading">Checklists</p>
+<ul class="episode-list"><li class="episode-row"><a href="docs/"><span class="ep-num">Ep. 08</span><span class="ep-tag">DOCS</span><span class="ep-title">4 docs before anyone touches your codebase</span><span class="ep-date">14 Nov 2026</span><span class="ep-arrow" aria-hidden="true">→</span></a></li><li class="episode-row"><a href="pricing/"><span class="ep-num">Ep. 07</span><span class="ep-tag">PRICING</span><span class="ep-title">How I'd price a SaaS today</span><span class="ep-date">12 Nov 2026</span><span class="ep-arrow" aria-hidden="true">→</span></a></li><li class="episode-row"><a href="seo/"><span class="ep-num">Ep. 06</span><span class="ep-tag">SEO</span><span class="ep-title">Every redesign I ship starts with a 301 map</span><span class="ep-date">10 Nov 2026</span><span class="ep-arrow" aria-hidden="true">→</span></a></li><li class="episode-row"><a href="email/"><span class="ep-num">Ep. 05</span><span class="ep-tag">EMAIL</span><span class="ep-title">Your emails land in spam. Fix 3 records.</span><span class="ep-date">9 Nov 2026</span><span class="ep-arrow" aria-hidden="true">→</span></a></li><li class="episode-row"><a href="monolith/"><span class="ep-num">Ep. 04</span><span class="ep-tag">MONOLITH</span><span class="ep-title">Monolith first. Still my call.</span><span class="ep-date">7 Nov 2026</span><span class="ep-arrow" aria-hidden="true">→</span></a></li><li class="episode-row"><a href="security/"><span class="ep-num">Ep. 03</span><span class="ep-tag">SECURITY</span><span class="ep-title">7 security holes I find in almost every audit</span><span class="ep-date">5 Nov 2026</span><span class="ep-arrow" aria-hidden="true">→</span></a></li><li class="episode-row"><a href="backup/"><span class="ep-num">Ep. 02</span><span class="ep-tag">BACKUP</span><span class="ep-title">Backups are not restores</span><span class="ep-date">3 Nov 2026</span><span class="ep-arrow" aria-hidden="true">→</span></a></li><li class="episode-row"><a href="launch/"><span class="ep-num">Ep. 01</span><span class="ep-tag">LAUNCH</span><span class="ep-title">20 things I check before any app goes live</span><span class="ep-date">2 Nov 2026</span><span class="ep-arrow" aria-hidden="true">→</span></a></li></ul>
+</section>
+<section class="cta-audit wrap" aria-labelledby="cta-home">
 <h2 id="cta-home" class="visually-hidden">Convertix audit</h2>
-<p><strong>Need it done?</strong> Launch audit for AI-built apps. €390, 3 working days. A senior developer reads your code, database rules and payment flow, then tells you what to fix before real users arrive. <a href="https://convertixdigital.com/en/audit?utm_source=ship-hub&utm_content=home">See the audit →</a></p>
+<p><strong>Need it done?</strong> Launch audit for AI-built apps. €390, 3 working days. A senior developer reads your code, database rules and payment flow, then tells you what to fix before real users arrive.</p>
 <p class="vat">Convertix Digital (Pika Care d.o.o., Slovenia) is not VAT-registered. VAT is not charged under Art. 94(1) ZDDV-1.</p>
+<a class="btn-audit" href="https://convertixdigital.com/en/audit?utm_source=ship-hub&utm_content=home">See the audit →</a>
 </section>
 </main>
 <footer class="site-footer wrap">
-<nav aria-label="Footer">
-<a href="privacy/">Privacy</a>
-<a href="https://www.instagram.com/inventive.dev/" rel="noopener noreferrer">Instagram</a>
-</nav>
-<p>© 2026 Rados Budisa · Examples use example.com; no client data.</p>
+<p>© 2026 Rados Budisa · <a href="privacy/">Privacy</a> · <a href="https://www.instagram.com/inventive.dev/" rel="noopener noreferrer">Instagram</a> · Examples use example.com; no client data.</p>
 </footer>
-<script>
-(function(){
-  var chips=document.querySelectorAll(".filter-chip");
-  var cards=document.querySelectorAll("#episode-grid .card");
-  function setActive(id){
-    chips.forEach(function(c){c.setAttribute("aria-current",c.getAttribute("data-filter")===id?"true":"false");});
-    cards.forEach(function(card){
-      var show=id==="all"||card.getAttribute("data-kind")===id;
-      card.style.display=show?"":"none";
-    });
-  }
-  chips.forEach(function(chip){
-    chip.addEventListener("click",function(e){
-      e.preventDefault();
-      setActive(chip.getAttribute("data-filter"));
-    });
-  });
-  setActive("all");
-})();
-</script>
 </body>
 </html>
