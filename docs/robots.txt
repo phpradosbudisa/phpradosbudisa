@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://phpradosbudisa.github.io/sitemap.xml
+Sitemap: https://phpradosbudisa.github.io/phpradosbudisa/sitemap.xml

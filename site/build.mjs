@@ -297,13 +297,17 @@ ${footer(depth)}
 
 function notFoundPage() {
   const depth = 0;
+  const head = headMeta({
+    title: "Page not found",
+    description: "This checklist page does not exist.",
+    url: `${SITE.baseUrl}/404.html`,
+    depth,
+  }).replace(
+    "</head>",
+    `<base href="${SITE.baseUrl}/">\n</head>`
+  );
   return (
-    headMeta({
-      title: "Page not found",
-      description: "This checklist page does not exist.",
-      url: `${SITE.baseUrl}/404.html`,
-      depth,
-    }) +
+    head +
     `<body>
 ${brandBar(depth)}
 <main class="wrap not-found">
