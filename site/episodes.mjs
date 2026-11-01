@@ -10,7 +10,7 @@ export const SITE = {
   positioning: "8 years shipping software",
   intro:
     "The posts introduce the topic. These pages are the reference you come back to.",
-  ga4Id: "",
+  ga4Id: "G-KFGVW1WRMB",
 };
 
 export const FILTERS = [
