@@ -3,25 +3,40 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Your emails land in spam. Fix 3 records. · Ship</title>
+<title>Your emails land in spam. Fix 3 records. · 3am Deploy</title>
 <meta name="description" content="SPF, DKIM and DMARC set up correctly, plus the Gmail/Yahoo rules.">
 <link rel="canonical" href="https://phpradosbudisa.github.io/phpradosbudisa/email/">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Your emails land in spam. Fix 3 records. · Ship">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Your emails land in spam. Fix 3 records. · 3am Deploy">
 <meta property="og:description" content="SPF, DKIM and DMARC set up correctly, plus the Gmail/Yahoo rules.">
 <meta property="og:url" content="https://phpradosbudisa.github.io/phpradosbudisa/email/">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Your emails land in spam. Fix 3 records. · Ship">
+<meta property="og:site_name" content="3am Deploy">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Your emails land in spam. Fix 3 records. · 3am Deploy">
 <meta name="twitter:description" content="SPF, DKIM and DMARC set up correctly, plus the Gmail/Yahoo rules.">
+<link rel="preload" href="../assets/fonts/inter-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="../assets/fonts/dm-serif-display.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="../assets/styles.css">
 <link rel="stylesheet" href="../assets/print.css" media="print">
-</head><body data-episode="email">
+<script>
+window.dataLayer=window.dataLayer||[];
+function gtag(){dataLayer.push(arguments);}
+gtag("consent","default",{ad_storage:"denied",analytics_storage:"denied",ad_user_data:"denied",ad_personalization:"denied",wait_for_update:500});
+</script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-KFGVW1WRMB"></script>
+<script>
+gtag("js",new Date());
+gtag("config","G-KFGVW1WRMB",{anonymize_ip:true,allow_google_signals:false,allow_ad_personalization_signals:false});
+</script>
+
+</head><body data-episode="email" data-page="email">
 <a class="skip-link" href="#main">Skip to content</a>
-<a class="home-link wrap" href="../">← All checklists</a>
+<a class="home-link wrap" href="../">← All episodes</a>
 <header class="wrap brand-bar">
 <a class="brand-link" href="../">
-<img class="brand-avatar" src="../assets/avatar_circle.png" width="48" height="48" alt="">
-<span class="brand-name"><span class="hl">Ship</span></span>
+<img class="brand-avatar" src="../assets/avatar_circle.png" width="48" height="48" alt="Portrait of Rados Budisa">
+<span class="brand-name"><span class="hl">3am Deploy</span></span>
 </a>
 </header>
 <main id="main" class="wrap">
@@ -29,11 +44,12 @@
 <header class="episode-page-head">
 <h1>Your emails land in spam. Fix 3 records.</h1>
 <p class="lead-promise">SPF, DKIM and DMARC set up correctly, plus the Gmail/Yahoo rules.</p>
-<p class="episode-meta">From the post on 9 Nov 2026</p>
+
 </header>
-<section class="checklist" aria-labelledby="checklist-heading">
+<div class="story"><p class="story-lede">Transactional email fails quietly: the app thinks it sent, the user never sees it, and the code path looked fine in staging.</p><p class="story-toc-label">The story in 4 steps</p><ol class="story-steps"><li class="story-step"><h2 class="story-step-title">Separate app mail from marketing</h2><p class="story-part"><span class="story-kicker">Situation</span> Product and newsletter share one domain and one reputation.</p><p class="story-part"><span class="story-kicker">Decision</span> Put transactional mail on a subdomain and protect its reputation.</p><p class="story-part"><span class="story-kicker">Tradeoff</span> More DNS records and provider setup before launch.</p><p class="story-part"><span class="story-kicker">What I choose</span> App mail from mail.example.com; marketing on its own stream with unsubscribe on bulk mail.</p><p class="story-part"><span class="story-kicker">What happens in prod</span> One bad campaign can push password resets into spam for everyone on the domain.</p><ul class="step-source-list"><li><span class="source-domain">support.google.com</span><a href="https://support.google.com/a/answer/81126" rel="noopener noreferrer">Google sender guidelines</a></li><li><span class="source-domain">senders.yahooinc.com</span><a href="https://senders.yahooinc.com/best-practices/" rel="noopener noreferrer">Yahoo sender best practices</a></li></ul></li><li class="story-step"><h2 class="story-step-title">SPF and DKIM without breaking DNS</h2><p class="story-part"><span class="story-kicker">Situation</span> Multiple tools append TXT records and someone adds a second SPF line.</p><p class="story-part"><span class="story-kicker">Decision</span> Publish one SPF record and sign with DKIM at 2048-bit where offered.</p><p class="story-part"><span class="story-kicker">Tradeoff</span> SPF lookup limits cap how many includes you can chain.</p><p class="story-part"><span class="story-kicker">What I choose</span> Single SPF, provider include, DKIM published and verified before go-live.</p><p class="story-part"><span class="story-kicker">What happens in prod</span> Two SPF records fail authentication for every message until DNS is fixed.</p><ul class="step-source-list"><li><span class="source-domain">rfc-editor.org</span><a href="https://www.rfc-editor.org/rfc/rfc7208" rel="noopener noreferrer">RFC 7208 (SPF)</a></li></ul></li><li class="story-step"><h2 class="story-step-title">DMARC in phases</h2><p class="story-part"><span class="story-kicker">Situation</span> Receivers start rejecting mail that fails alignment.</p><p class="story-part"><span class="story-kicker">Decision</span> Roll DMARC from monitor to enforce without blocking your own invoices.</p><p class="story-part"><span class="story-kicker">Tradeoff</span> p=reject protects the domain; misconfiguration blocks legitimate mail.</p><p class="story-part"><span class="story-kicker">What I choose</span> Start at p=none with reports, read them for two to four weeks, then quarantine, then reject.</p><p class="story-part"><span class="story-kicker">What happens in prod</span> Jumping straight to reject without reports is how teams lock themselves out of their own domain.</p><ul class="step-source-list"><li><span class="source-domain">rfc-editor.org</span><a href="https://www.rfc-editor.org/rfc/rfc7489" rel="noopener noreferrer">RFC 7489 (DMARC)</a></li><li><span class="source-domain">support.google.com</span><a href="https://support.google.com/a/answer/81126" rel="noopener noreferrer">Google sender guidelines</a></li></ul></li><li class="story-step"><h2 class="story-step-title">Verify before launch day</h2><p class="story-part"><span class="story-kicker">Situation</span> DNS propagates slowly and launch is tomorrow morning.</p><p class="story-part"><span class="story-kicker">Decision</span> Send test messages and read Gmail headers the week before.</p><p class="story-part"><span class="story-kicker">Tradeoff</span> Waiting a week delays other work.</p><p class="story-part"><span class="story-kicker">What I choose</span> Show original in Gmail: spf=pass, dkim=pass, dmarc=pass. Meet bulk sender rules if volume applies.</p><p class="story-part"><span class="story-kicker">What happens in prod</span> Morning-of DNS changes are the ones that miss propagation when users arrive.</p><ul class="step-source-list"><li><span class="source-domain">support.google.com</span><a href="https://support.google.com/a/answer/81126" rel="noopener noreferrer">Google sender guidelines</a></li><li><span class="source-domain">rfc-editor.org</span><a href="https://www.rfc-editor.org/rfc/rfc8058" rel="noopener noreferrer">RFC 8058 (one-click unsubscribe)</a></li></ul></li></ol></div>
+<section class="checklist reference-checklist" aria-labelledby="reference-list-heading">
 <div class="checklist-head">
-<h2 id="checklist-heading">Checklist</h2>
+<h2 id="reference-list-heading">Reference list</h2>
 <span id="checklist-progress" class="checklist-progress">0 / 7 done</span>
 </div><div class="checklist-section"><p class="lead">Launch day. The password reset email lands in spam. What breaks in prod here is rarely the code; it's the DNS nobody set up. The fix is three records and a bit of patience:</p><ul class="checklist-items"><li><label class="checklist-row"><input type="checkbox" id="email-0" data-item="email-0"><span class="check-ui" aria-hidden="true"></span><span class="check-body"><strong>SPF: who may send for your domain</strong> A TXT record listing your email providers, e.g. v=spf1 include:&lt;your provider&gt; ~all<ul><li>Only ONE SPF record per domain. Two records = SPF fails.</li><li>Max 10 DNS lookups. Every include counts.</li></ul></span></label></li><li><label class="checklist-row"><input type="checkbox" id="email-1" data-item="email-1"><span class="check-ui" aria-hidden="true"></span><span class="check-body"><strong>DKIM: every message is signed</strong> Your provider gives you a key (usually a CNAME or TXT at selector._domainkey). Publish it, turn signing on, use 2048-bit where offered.</span></label></li><li><label class="checklist-row"><input type="checkbox" id="email-2" data-item="email-2"><span class="check-ui" aria-hidden="true"></span><span class="check-body"><strong>DMARC: what receivers do when checks fail</strong> _dmarc TXT "v=DMARC1; p=none; rua=mailto:you@yourdomain"<ul><li>Start at p=none and read the reports for 2–4 weeks.</li><li>Then p=quarantine, then p=reject.</li><li>DMARC needs alignment: the From domain must match the SPF or DKIM domain.</li></ul></span></label></li><li><label class="checklist-row"><input type="checkbox" id="email-3" data-item="email-3"><span class="check-ui" aria-hidden="true"></span><span class="check-body">Send app email from a subdomain (mail.yourdomain) and keep marketing separate, so one can't burn the other's reputation.</span></label></li><li><label class="checklist-row"><input type="checkbox" id="email-4" data-item="email-4"><span class="check-ui" aria-hidden="true"></span><span class="check-body">Gmail and Yahoo require SPF, DKIM and DMARC for bulk senders (5,000+ a day to Gmail), plus one-click unsubscribe on marketing mail and a spam rate under 0.3%.</span></label></li><li><label class="checklist-row"><input type="checkbox" id="email-5" data-item="email-5"><span class="check-ui" aria-hidden="true"></span><span class="check-body">Test it: send to Gmail → "Show original" → spf=pass, dkim=pass, dmarc=pass.</span></label></li><li><label class="checklist-row"><input type="checkbox" id="email-6" data-item="email-6"><span class="check-ui" aria-hidden="true"></span><span class="check-body">DNS changes can take hours to propagate. Do this the week before launch, not the morning of.</span></label></li></ul><p class="lead">My call: two to four weeks at p=none before you tighten. Slower, but you never block your own invoices.</p></div></section>
 <section class="prompt-section" aria-labelledby="prompt-heading">
@@ -46,20 +62,18 @@
 <pre class="prompt-block" id="prompt-email">Given my sending domain &lt;domain&gt; and providers &lt;list&gt;, produce the exact SPF, DKIM and DMARC DNS records, check the SPF lookup count, and give a 4-week DMARC rollout plan.</pre>
 </div>
 </section>
-<section class="sources" aria-labelledby="sources-heading">
-<h2 id="sources-heading">Official sources</h2>
-<ul class="source-list"><li><span class="source-domain">support.google.com</span><a href="https://support.google.com/a/answer/81126" rel="noopener noreferrer">Google sender guidelines</a><span class="source-note">Authentication and bulk sender requirements for Gmail.</span></li><li><span class="source-domain">senders.yahooinc.com</span><a href="https://senders.yahooinc.com/best-practices/" rel="noopener noreferrer">Yahoo sender best practices</a><span class="source-note">Yahoo's expectations for authenticated mail.</span></li><li><span class="source-domain">rfc-editor.org</span><a href="https://www.rfc-editor.org/rfc/rfc7208" rel="noopener noreferrer">RFC 7208 (SPF)</a><span class="source-note">SPF specification.</span></li><li><span class="source-domain">rfc-editor.org</span><a href="https://www.rfc-editor.org/rfc/rfc7489" rel="noopener noreferrer">RFC 7489 (DMARC)</a><span class="source-note">DMARC policy and alignment rules.</span></li><li><span class="source-domain">rfc-editor.org</span><a href="https://www.rfc-editor.org/rfc/rfc8058" rel="noopener noreferrer">RFC 8058 (one-click unsubscribe)</a><span class="source-note">List-Unsubscribe-Post for marketing mail.</span></li><li><span class="source-domain">resend.com</span><a href="https://resend.com/docs/dashboard/domains/introduction" rel="noopener noreferrer">Resend domains</a><span class="source-note">DNS records when sending via Resend.</span></li></ul></section>
+
 </article>
-<nav class="episode-nav wrap" aria-label="Episode navigation"><a class="ep-nav-link prev" href="../seo/"><span class="ep-nav-label">← Ep. 06</span><span class="ep-nav-title">Every redesign I ship starts with a 301 map</span></a><a class="ep-nav-link next" href="../monolith/"><span class="ep-nav-label">Ep. 04 →</span><span class="ep-nav-title">Monolith first. Still my call.</span></a></nav>
+
 <section class="cta-audit wrap" aria-labelledby="cta-email">
 <h2 id="cta-email" class="visually-hidden">Convertix audit</h2>
 <p><strong>Need it done?</strong> Launch audit for AI-built apps. €390, 3 working days. A senior developer reads your code, database rules and payment flow, then tells you what to fix before real users arrive.</p>
 <p class="vat">Convertix Digital (Pika Care d.o.o., Slovenia) is not VAT-registered. VAT is not charged under Art. 94(1) ZDDV-1.</p>
-<a class="btn-audit" href="https://convertixdigital.com/en/audit?utm_source=ship-hub&utm_content=email">See the audit →</a>
+<a class="btn-audit" href="https://convertixdigital.com/en/audit?utm_source=3am_deploy&amp;utm_medium=referral&amp;utm_campaign=email&amp;utm_content=audit" data-outbound="audit" rel="noopener noreferrer">See the audit →</a>
 </section>
 </main>
 <footer class="site-footer wrap">
-<p>© 2026 Rados Budisa · <a href="../privacy/">Privacy</a> · <a href="https://www.instagram.com/inventive.dev/" rel="noopener noreferrer">Instagram</a> · Examples use example.com; no client data.</p>
+<p>© 2026 Rados Budisa · <a href="../privacy/">Privacy</a> · <a href="https://www.instagram.com/burad.ships/?utm_source=3am_deploy&amp;utm_medium=referral&amp;utm_campaign=email&amp;utm_content=instagram" data-outbound="instagram" rel="noopener noreferrer">Instagram</a> · Examples use example.com; no client data.</p>
 </footer>
 <script src="../assets/main.js" defer></script>
 </body>

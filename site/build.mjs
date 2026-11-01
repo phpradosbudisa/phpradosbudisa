@@ -1,7 +1,8 @@
 import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
-import { SITE, EPISODES, getPrompt } from "./episodes.mjs";
+import { SITE, EPISODES, PRODUCTS, getPrompt, episodeIsLive } from "./episodes.mjs";
+import { generateOgImages } from "./og.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.join(__dirname, "..");
@@ -37,13 +38,125 @@ function countChecklistItems(ep) {
   return n;
 }
 
-function episodeIndex(slug) {
-  return EPISODES.findIndex((e) => e.slug === slug);
+function outboundUrl(rawUrl, campaign, content) {
+  const u = new URL(rawUrl);
+  u.searchParams.set("utm_source", "3am_deploy");
+  u.searchParams.set("utm_medium", "referral");
+  u.searchParams.set("utm_campaign", campaign);
+  u.searchParams.set("utm_content", content);
+  return u.toString();
 }
 
-function headMeta({ title, description, url, depth }) {
+function outboundHref(rawUrl, pageSlug, linkSlug) {
+  return esc(outboundUrl(rawUrl, pageSlug, linkSlug));
+}
+
+function fontPreloads(depth) {
   const prefix = assetPrefix(depth);
-  const fullTitle = title === SITE.title ? title : `${title} · Ship`;
+  return `<link rel="preload" href="${prefix}assets/fonts/inter-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="${prefix}assets/fonts/dm-serif-display.woff2" as="font" type="font/woff2" crossorigin>`;
+}
+
+function analyticsHead() {
+  const id = (SITE.ga4Id || "").trim();
+  if (!id) return "";
+  const eid = esc(id);
+  return `<script>
+window.dataLayer=window.dataLayer||[];
+function gtag(){dataLayer.push(arguments);}
+gtag("consent","default",{ad_storage:"denied",analytics_storage:"denied",ad_user_data:"denied",ad_personalization:"denied",wait_for_update:500});
+</script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=${eid}"></script>
+<script>
+gtag("js",new Date());
+gtag("config","${eid}",{anonymize_ip:true,allow_google_signals:false,allow_ad_personalization_signals:false});
+</script>`;
+}
+
+function jsonLdScript(obj) {
+  return `<script type="application/ld+json">${JSON.stringify(obj)}</script>`;
+}
+
+function personJsonLd() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    name: SITE.name,
+    url: `${SITE.baseUrl}/`,
+    sameAs: [SITE.instagram],
+  };
+}
+
+function homeJsonLd() {
+  return {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Person",
+        name: SITE.name,
+        url: `${SITE.baseUrl}/`,
+        sameAs: [SITE.instagram],
+      },
+      {
+        "@type": "WebSite",
+        name: SITE.brandName,
+        url: `${SITE.baseUrl}/`,
+      },
+    ],
+  };
+}
+
+function articleJsonLd(ep) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: ep.title,
+    datePublished: `${ep.dateIso}T00:00:00Z`,
+    author: {
+      "@type": "Person",
+      name: SITE.name,
+      sameAs: [SITE.instagram],
+    },
+    publisher: {
+      "@type": "Organization",
+      name: SITE.brandName,
+    },
+  };
+}
+
+function ogSlugForPage(pageSlug) {
+  if (pageSlug === "home") return "home";
+  return pageSlug;
+}
+
+function ogImageUrl(pageSlug) {
+  const liveOg = ["home", "why", "launch", "backup"];
+  const slug = ogSlugForPage(pageSlug);
+  if (!liveOg.includes(slug)) return null;
+  return `${SITE.baseUrl}/assets/og/${slug}.png`;
+}
+
+function headMeta({
+  title,
+  description,
+  url,
+  depth,
+  pageSlug,
+  jsonLd,
+  ogType = "website",
+}) {
+  const prefix = assetPrefix(depth);
+  const fullTitle = title === SITE.title ? title : `${title} · ${SITE.brandName}`;
+  const ogImage = ogImageUrl(pageSlug);
+  let ogBlock = "";
+  if (ogImage) {
+    ogBlock = `<meta property="og:image" content="${esc(ogImage)}">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="${esc(description.slice(0, 120))}">
+<meta name="twitter:image" content="${esc(ogImage)}">`;
+  }
+  const ld = jsonLd ? jsonLdScript(jsonLd) : "";
   return `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -52,23 +165,34 @@ function headMeta({ title, description, url, depth }) {
 <title>${esc(fullTitle)}</title>
 <meta name="description" content="${esc(description)}">
 <link rel="canonical" href="${esc(url)}">
-<meta property="og:type" content="website">
+<meta property="og:type" content="${esc(ogType)}">
 <meta property="og:title" content="${esc(fullTitle)}">
 <meta property="og:description" content="${esc(description)}">
 <meta property="og:url" content="${esc(url)}">
-<meta name="twitter:card" content="summary">
+<meta property="og:site_name" content="${esc(SITE.brandName)}">
+${ogBlock}
+<meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="${esc(fullTitle)}">
 <meta name="twitter:description" content="${esc(description)}">
+${fontPreloads(depth)}
 <link rel="stylesheet" href="${prefix}assets/styles.css">
 <link rel="stylesheet" href="${prefix}assets/print.css" media="print">
+${analyticsHead()}
+${ld}
 </head>`;
 }
 
-function footer(depth) {
+function pageScripts(depth) {
+  const prefix = assetPrefix(depth);
+  return `<script src="${prefix}assets/main.js" defer></script>`;
+}
+
+function footer(depth, pageSlug) {
   const prefix = assetPrefix(depth);
   const y = new Date().getFullYear();
+  const ig = outboundHref(SITE.instagram, pageSlug, "instagram");
   return `<footer class="site-footer wrap">
-<p>© ${y} ${esc(SITE.name)} · <a href="${prefix}privacy/">Privacy</a> · <a href="${SITE.instagram}" rel="noopener noreferrer">Instagram</a> · Examples use example.com; no client data.</p>
+<p>© ${y} ${esc(SITE.name)} · <a href="${prefix}privacy/">Privacy</a> · <a href="${ig}" data-outbound="instagram" rel="noopener noreferrer">Instagram</a> · Examples use example.com; no client data.</p>
 </footer>`;
 }
 
@@ -76,47 +200,126 @@ function brandBar(depth) {
   const prefix = assetPrefix(depth);
   return `<header class="wrap brand-bar">
 <a class="brand-link" href="${prefix}">
-<img class="brand-avatar" src="${prefix}assets/avatar_circle.png" width="48" height="48" alt="">
-<span class="brand-name"><span class="hl">Ship</span></span>
+<img class="brand-avatar" src="${prefix}assets/avatar_circle.png" width="48" height="48" alt="Portrait of ${esc(SITE.name)}">
+<span class="brand-name"><span class="hl">${esc(SITE.brandName)}</span></span>
 </a>
 </header>`;
 }
 
-function homeHero(depth) {
+function homeHero(depth, pageSlug) {
   const prefix = assetPrefix(depth);
+  const ig = outboundHref(SITE.instagram, pageSlug, "instagram");
   return `<header class="hero wrap">
 <div class="hero-layout">
-<img class="hero-avatar" src="${prefix}assets/avatar_circle.png" width="144" height="144" alt="">
+<img class="hero-avatar" src="${prefix}assets/avatar_circle.png" width="144" height="144" alt="Portrait of ${esc(SITE.name)}">
 <div>
-<h1 class="hero-title"><span class="hl">Ship</span></h1>
-<p class="hero-sub">what actually breaks when you go live</p>
+<h1 class="hero-title"><span class="hl">${esc(SITE.brandName)}</span></h1>
+<p class="hero-sub">Stories from 8 years of shipping software: what breaks in prod and the call I make.</p>
 <p class="hero-bio">Senior developer · ${esc(SITE.positioning)}</p>
-<p class="hero-meta">${esc(SITE.metaDescription)}</p>
 <div class="pill-row">
-<a class="pill" href="${SITE.instagram}" rel="noopener noreferrer">Instagram</a>
-<a class="pill" href="#projects">Projects</a>
+<a class="pill" href="${ig}" data-outbound="instagram" rel="noopener noreferrer">Instagram</a>
+<a class="pill" href="#products">Products</a>
 </div>
 </div>
 </div>
 </header>`;
 }
 
-function ctaAudit(slug, depth) {
-  const audit = `https://convertixdigital.com/en/audit?utm_source=ship-hub&utm_content=${slug}`;
-  return `<section class="cta-audit wrap" aria-labelledby="cta-${slug}">
-<h2 id="cta-${slug}" class="visually-hidden">Convertix audit</h2>
+function ctaAudit(pageSlug, depth) {
+  const audit = outboundUrl(
+    "https://convertixdigital.com/en/audit",
+    pageSlug,
+    "audit"
+  );
+  return `<section class="cta-audit wrap" aria-labelledby="cta-${pageSlug}">
+<h2 id="cta-${pageSlug}" class="visually-hidden">Convertix audit</h2>
 <p><strong>Need it done?</strong> Launch audit for AI-built apps. €390, 3 working days. A senior developer reads your code, database rules and payment flow, then tells you what to fix before real users arrive.</p>
 <p class="vat">Convertix Digital (Pika Care d.o.o., Slovenia) is not VAT-registered. VAT is not charged under Art. 94(1) ZDDV-1.</p>
-<a class="btn-audit" href="${audit}">See the audit →</a>
+<a class="btn-audit" href="${esc(audit)}" data-outbound="audit" rel="noopener noreferrer">See the audit →</a>
 </section>`;
 }
 
+function renderStepSources(ep, indexes) {
+  if (!indexes?.length) return "";
+  let html = `<ul class="step-source-list">`;
+  for (const i of indexes) {
+    const s = ep.sources[i];
+    if (!s) continue;
+    html += `<li><span class="source-domain">${esc(sourceDomain(s.url))}</span><a href="${esc(s.url)}" rel="noopener noreferrer">${esc(s.title)}</a></li>`;
+  }
+  html += `</ul>`;
+  return html;
+}
+
+function renderStory(ep) {
+  if (ep.introPage) {
+    let html = `<div class="story">`;
+    if (ep.storyLede) {
+      html += `<p class="story-lede">${esc(ep.storyLede)}</p>`;
+    }
+    for (const block of ep.introSections || []) {
+      html += `<section class="story-block"><h2 class="story-block-title">${esc(block.heading)}</h2>`;
+      if (block.episodeIndex) {
+        html += renderEpisodeIndexList(1);
+      } else {
+        for (const p of block.paragraphs || []) {
+          html += `<p>${esc(p)}</p>`;
+        }
+      }
+      html += `</section>`;
+    }
+    html += `</div>`;
+    return html;
+  }
+  if (!ep.storyLede && !ep.storySteps?.length) return "";
+  let html = `<div class="story">`;
+  html += `<p class="story-lede">${esc(ep.storyLede)}</p>`;
+  if (ep.storySteps?.length) {
+    html += `<p class="story-toc-label">The story in ${ep.storySteps.length} steps</p>`;
+    html += `<ol class="story-steps">`;
+    for (const step of ep.storySteps) {
+      html += `<li class="story-step">`;
+      html += `<h2 class="story-step-title">${esc(step.title)}</h2>`;
+      const parts = [
+        ["Situation", step.situation],
+        ["Decision", step.decision],
+        ["Tradeoff", step.tradeoff],
+        ["What I choose", step.choice],
+        ["What happens in prod", step.prod],
+      ];
+      for (const [label, text] of parts) {
+        if (!text) continue;
+        html += `<p class="story-part"><span class="story-kicker">${esc(label)}</span> ${esc(text)}</p>`;
+      }
+      html += renderStepSources(ep, step.sourceIndexes);
+      html += `</li>`;
+    }
+    html += `</ol>`;
+  }
+  html += `</div>`;
+  return html;
+}
+
+function renderEpisodeIndexList(depth) {
+  const prefix = assetPrefix(depth);
+  const rows = EPISODES.filter((e) => e.num > 0 && episodeIsLive(e))
+    .slice()
+    .sort((a, b) => a.num - b.num)
+    .map(
+      (e) =>
+        `<li><a href="${prefix}${e.slug}/"><span class="ep-index-num">${epLabel(e.num)}</span><span class="ep-index-title">${esc(e.title)}</span></a></li>`
+    )
+    .join("");
+  return `<ul class="episode-index-list">${rows}</ul>`;
+}
+
 function renderChecklist(ep) {
+  if (!ep.sections?.length || ep.introPage) return "";
   const total = countChecklistItems(ep);
   let itemIndex = 0;
-  let html = `<section class="checklist" aria-labelledby="checklist-heading">
+  let html = `<section class="checklist reference-checklist" aria-labelledby="reference-list-heading">
 <div class="checklist-head">
-<h2 id="checklist-heading">Checklist</h2>
+<h2 id="reference-list-heading">Reference list</h2>
 <span id="checklist-progress" class="checklist-progress">0 / ${total} done</span>
 </div>`;
   for (const sec of ep.sections) {
@@ -145,6 +348,7 @@ function renderChecklist(ep) {
 }
 
 function renderPrompt(ep) {
+  if (ep.introPage || !getPrompt(ep)) return "";
   const text = getPrompt(ep);
   const id = `prompt-${ep.slug}`;
   return `<section class="prompt-section" aria-labelledby="prompt-heading">
@@ -170,11 +374,35 @@ function renderSources(ep) {
   return html;
 }
 
+function listEpisodesHome() {
+  const rest = EPISODES.filter((e) => !e.introPage && episodeIsLive(e))
+    .slice()
+    .sort((a, b) => b.num - a.num);
+  const intro = EPISODES.find((e) => e.introPage && episodeIsLive(e));
+  return intro ? [intro, ...rest] : rest;
+}
+
+function navEpisodes(ep) {
+  const intro = EPISODES.find((e) => e.introPage && episodeIsLive(e));
+  const numbered = EPISODES.filter((e) => !e.introPage && episodeIsLive(e))
+    .slice()
+    .sort((a, b) => a.num - b.num);
+  const idx = numbered.findIndex((e) => e.slug === ep.slug);
+  if (ep.introPage) {
+    return { newer: null, older: numbered[0] || null };
+  }
+  if (idx < 0) {
+    return { newer: null, older: null };
+  }
+  const newer =
+    idx <= 0 ? intro || null : numbered[idx - 1];
+  const older = idx >= numbered.length - 1 ? null : numbered[idx + 1];
+  return { newer, older };
+}
+
 function episodeNav(ep, depth) {
   const prefix = assetPrefix(depth);
-  const idx = episodeIndex(ep.slug);
-  const newer = idx > 0 ? EPISODES[idx - 1] : null;
-  const older = idx >= 0 && idx < EPISODES.length - 1 ? EPISODES[idx + 1] : null;
+  const { newer, older } = navEpisodes(ep);
   if (!newer && !older) return "";
   const count = (newer ? 1 : 0) + (older ? 1 : 0);
   let html = `<nav class="episode-nav wrap${count === 1 ? " episode-nav--single" : ""}" aria-label="Episode navigation">`;
@@ -194,73 +422,98 @@ function episodePage(ep) {
   const depth = 1;
   const prefix = assetPrefix(depth);
   const url = `${SITE.baseUrl}/${ep.slug}/`;
-  const body = `<body data-episode="${ep.slug}">
+  const metaLine = ep.introPage
+    ? `<p class="episode-meta">${esc(SITE.positioning)}</p>`
+    : episodeIsLive(ep)
+      ? `<p class="episode-meta">From the post on ${esc(ep.date)}</p>`
+      : "";
+  const body = `<body data-episode="${ep.slug}" data-page="${ep.slug}">
 <a class="skip-link" href="#main">Skip to content</a>
-<a class="home-link wrap" href="${prefix}">← All checklists</a>
+<a class="home-link wrap" href="${prefix}">← All episodes</a>
 ${brandBar(depth)}
 <main id="main" class="wrap">
 <article>
 <header class="episode-page-head">
 <h1>${esc(ep.title)}</h1>
 <p class="lead-promise">${esc(ep.promise)}</p>
-<p class="episode-meta">From the post on ${esc(ep.date)}</p>
+${metaLine}
 </header>
+${renderStory(ep)}
 ${renderChecklist(ep)}
 ${renderPrompt(ep)}
-${renderSources(ep)}
+${ep.storySteps?.length || ep.introPage ? "" : renderSources(ep)}
 </article>
 ${episodeNav(ep, depth)}
 ${ctaAudit(ep.slug, depth)}
 </main>
-${footer(depth)}
-<script src="${prefix}assets/main.js" defer></script>
+${footer(depth, ep.slug)}
+${pageScripts(depth)}
 </body>`;
+  const jsonLd = episodeIsLive(ep) && !ep.introPage ? articleJsonLd(ep) : null;
   return (
     headMeta({
       title: ep.title,
       description: ep.promise,
       url,
       depth,
+      pageSlug: ep.slug,
+      jsonLd,
+      ogType: ep.introPage ? "website" : "article",
     }) +
     body +
     "\n</html>\n"
   );
 }
 
+function productStatusClass(status) {
+  const s = String(status).toLowerCase();
+  if (s === "live") return "product-status--live";
+  if (s.includes("coming")) return "product-status--soon";
+  return "product-status--building";
+}
+
+function productRows(pageSlug) {
+  let html = `<ul class="product-list">`;
+  for (const p of PRODUCTS) {
+    const chip = `<span class="product-status ${productStatusClass(p.status)}">${esc(p.status)}</span>`;
+    const domain = p.domain
+      ? `<span class="product-domain">${esc(p.domain)}</span>`
+      : "";
+    if (p.url) {
+      const href = outboundHref(p.url, pageSlug, p.linkSlug || p.name.toLowerCase());
+      html += `<li class="product-row"><a href="${href}" data-outbound="${esc(p.linkSlug || "")}" rel="noopener noreferrer"><span class="product-name">${esc(p.name)}</span><span class="product-tagline">${esc(p.tagline)}</span>${domain}${chip}<span class="product-arrow" aria-hidden="true">→</span></a></li>`;
+    } else {
+      html += `<li class="product-row product-row--static"><div class="product-row-inner"><span class="product-name">${esc(p.name)}</span><span class="product-tagline">${esc(p.tagline)}</span>${chip}</div></li>`;
+    }
+  }
+  html += `</ul>`;
+  return html;
+}
+
 function homePage() {
   const depth = 0;
   const url = `${SITE.baseUrl}/`;
   let rows = "";
-  for (const ep of EPISODES) {
+  for (const ep of listEpisodesHome()) {
     rows += `<li class="episode-row"><a href="${ep.slug}/"><span class="ep-num">${epLabel(ep.num)}</span><span class="ep-tag">${esc(ep.keyword)}</span><span class="ep-title">${esc(ep.title)}</span><span class="ep-date">${esc(ep.date)}</span><span class="ep-arrow" aria-hidden="true">→</span></a></li>`;
   }
-  const body = `<body>
+  const body = `<body data-page="home">
 <a class="skip-link" href="#main">Skip to content</a>
-${homeHero(depth)}
+${homeHero(depth, "home")}
 <main id="main" class="wrap">
 <p class="intro-block">${esc(SITE.intro)}</p>
-<section class="projects-section" id="projects" aria-labelledby="projects-heading">
-<p class="section-label" id="projects-heading">Projects</p>
-<div class="project-grid">
-<a class="project-card" href="https://convertixdigital.com" rel="noopener noreferrer">
-<div class="project-card-head"><h3>Convertix</h3><span class="arrow" aria-hidden="true">→</span></div>
-<p>Launch studio.</p>
-<span class="project-domain">convertixdigital.com</span>
-</a>
-<a class="project-card" href="https://urejamo.si" rel="noopener noreferrer">
-<div class="project-card-head"><h3>Urejamo.si</h3><span class="arrow" aria-hidden="true">→</span></div>
-<p>Local services marketplace.</p>
-<span class="project-domain">urejamo.si</span>
-</a>
-</div>
+<section class="products-section" id="products" aria-labelledby="products-heading">
+<p class="section-label" id="products-heading">Products I've built</p>
+${productRows("home")}
 </section>
 <section class="episode-list-section" aria-labelledby="episodes-heading">
-<p class="section-label" id="episodes-heading">Checklists</p>
+<p class="section-label" id="episodes-heading">Episodes</p>
 <ul class="episode-list">${rows}</ul>
 </section>
 ${ctaAudit("home", depth)}
 </main>
-${footer(depth)}
+${footer(depth, "home")}
+${pageScripts(depth)}
 </body>`;
   return (
     headMeta({
@@ -268,6 +521,8 @@ ${footer(depth)}
       description: SITE.metaDescription,
       url,
       depth,
+      pageSlug: "home",
+      jsonLd: homeJsonLd(),
     }) +
     body +
     "\n</html>\n"
@@ -278,17 +533,24 @@ function legalPage({ title, bodyHtml, slug }) {
   const depth = 1;
   const url = `${SITE.baseUrl}/${slug}/`;
   return (
-    headMeta({ title, description: title, url, depth }) +
-    `<body>
+    headMeta({
+      title,
+      description: title,
+      url,
+      depth,
+      pageSlug: slug,
+    }) +
+    `<body data-page="${slug}">
 <a class="skip-link" href="#main">Skip to content</a>
-<a class="home-link wrap" href="../">← All checklists</a>
+<a class="home-link wrap" href="../">← All episodes</a>
 ${brandBar(depth)}
 <main id="main" class="wrap legal-page">
 <h1>${esc(title)}</h1>
 ${bodyHtml}
 </main>
 ${ctaAudit(slug, depth)}
-${footer(depth)}
+${footer(depth, slug)}
+${pageScripts(depth)}
 </body>
 </html>
 `
@@ -299,23 +561,22 @@ function notFoundPage() {
   const depth = 0;
   const head = headMeta({
     title: "Page not found",
-    description: "This checklist page does not exist.",
+    description: "This page does not exist.",
     url: `${SITE.baseUrl}/404.html`,
     depth,
-  }).replace(
-    "</head>",
-    `<base href="${SITE.baseUrl}/">\n</head>`
-  );
+    pageSlug: "404",
+  }).replace("</head>", `<base href="${SITE.baseUrl}/">\n</head>`);
   return (
     head +
-    `<body>
+    `<body data-page="404">
 ${brandBar(depth)}
 <main class="wrap not-found">
 <h1>Page not found</h1>
-<p>That checklist is not here. <a href="./">Back to Ship</a></p>
+<p>That page is not here. <a href="./">Back to ${esc(SITE.brandName)}</a></p>
 </main>
 ${ctaAudit("404", depth)}
-${footer(depth)}
+${footer(depth, "404")}
+${pageScripts(depth)}
 </body>
 </html>
 `
@@ -323,14 +584,18 @@ ${footer(depth)}
 }
 
 function sitemap() {
+  const live = EPISODES.filter((e) => episodeIsLive(e));
+  const homeLastmod = live.reduce(
+    (max, e) => (e.dateIso > max ? e.dateIso : max),
+    "2026-11-01"
+  );
   const urls = [
-    { loc: `${SITE.baseUrl}/`, priority: "1.0" },
-    ...EPISODES.map((e) => ({
+    { loc: `${SITE.baseUrl}/`, priority: "1.0", lastmod: homeLastmod },
+    ...live.map((e) => ({
       loc: `${SITE.baseUrl}/${e.slug}/`,
       priority: "0.8",
       lastmod: e.dateIso,
     })),
-    { loc: `${SITE.baseUrl}/privacy/`, priority: "0.3" },
   ];
   let xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`;
   for (const u of urls) {
@@ -379,6 +644,22 @@ function writeFile(rel, content) {
 fs.rmSync(outDir, { recursive: true, force: true });
 fs.mkdirSync(outDir, { recursive: true });
 copyAssets();
+
+const ogOut = path.join(outDir, "assets", "og");
+const ogPages = [
+  {
+    slug: "home",
+    headline: SITE.brandName,
+    subtitle: SITE.metaDescription,
+  },
+  ...EPISODES.filter((e) => episodeIsLive(e)).map((e) => ({
+    slug: e.slug,
+    headline: e.title,
+    subtitle: e.promise,
+  })),
+];
+generateOgImages({ pages: ogPages, siteDir: __dirname, outDir: ogOut });
+
 writeFile("index.html", homePage());
 for (const ep of EPISODES) {
   writeFile(`${ep.slug}/index.html`, episodePage(ep));
@@ -388,11 +669,14 @@ writeFile(
   legalPage({
     slug: "privacy",
     title: "Privacy",
-    bodyHtml: `<p>At launch, this site collects no personal data through forms. Checklist progress is stored only in your browser (localStorage).</p>
+    bodyHtml: `<p>At launch, this site collects no personal data through forms. Reference list progress is stored only in your browser (localStorage).</p>
 <h2>Purpose &amp; legal basis</h2>
-<p>Static checklists for information only. No account system.</p>
+<p>Static episode pages for information only. No account system.</p>
+<h2>Analytics</h2>
+<p>When enabled, the site loads Google Analytics 4 with Consent Mode v2 defaults: ad_storage, analytics_storage, ad_user_data and ad_personalization stay denied and are never updated. No cookie banner is shown. Measurement uses cookieless pings only; this site does not set analytics cookies.</p>
+<p>Google may receive page URL, referrer, and coarse device/browser signals. Outbound link clicks fire a custom event (outbound_click) with the destination URL and link label when analytics is enabled.</p>
 <h2>Processors</h2>
-<p>Hosting: GitHub Pages. Analytics (if enabled): cookieless (Cloudflare Web Analytics or GA4 without cookies).</p>
+<p>Hosting: GitHub Pages. Analytics (if enabled): Google Analytics 4.</p>
 <h2>Retention &amp; rights</h2>
 <p>No server-side personal data at launch. You can clear localStorage in your browser. Contact the site owner for privacy requests.</p>`,
   })

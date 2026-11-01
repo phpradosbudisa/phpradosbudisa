@@ -17,6 +17,19 @@
     });
   });
 
+  if (typeof gtag === "function") {
+    document.addEventListener("click", function (e) {
+      var a = e.target.closest("a[data-outbound]");
+      if (!a) return;
+      var page = document.body.getAttribute("data-page") || "";
+      gtag("event", "outbound_click", {
+        link_url: a.href,
+        link_slug: a.getAttribute("data-outbound") || "",
+        page: page,
+      });
+    });
+  }
+
   var slug = document.body.getAttribute("data-episode");
   if (!slug) return;
   var key = "ship-checklist-" + slug;

@@ -3,25 +3,44 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Backups are not restores · Ship</title>
+<title>Backups are not restores · 3am Deploy</title>
 <meta name="description" content="A monthly restore drill you can run in an hour.">
 <link rel="canonical" href="https://phpradosbudisa.github.io/phpradosbudisa/backup/">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Backups are not restores · Ship">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Backups are not restores · 3am Deploy">
 <meta property="og:description" content="A monthly restore drill you can run in an hour.">
 <meta property="og:url" content="https://phpradosbudisa.github.io/phpradosbudisa/backup/">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Backups are not restores · Ship">
+<meta property="og:site_name" content="3am Deploy">
+<meta property="og:image" content="https://phpradosbudisa.github.io/phpradosbudisa/assets/og/backup.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="A monthly restore drill you can run in an hour.">
+<meta name="twitter:image" content="https://phpradosbudisa.github.io/phpradosbudisa/assets/og/backup.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Backups are not restores · 3am Deploy">
 <meta name="twitter:description" content="A monthly restore drill you can run in an hour.">
+<link rel="preload" href="../assets/fonts/inter-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="../assets/fonts/dm-serif-display.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="../assets/styles.css">
 <link rel="stylesheet" href="../assets/print.css" media="print">
-</head><body data-episode="backup">
+<script>
+window.dataLayer=window.dataLayer||[];
+function gtag(){dataLayer.push(arguments);}
+gtag("consent","default",{ad_storage:"denied",analytics_storage:"denied",ad_user_data:"denied",ad_personalization:"denied",wait_for_update:500});
+</script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-KFGVW1WRMB"></script>
+<script>
+gtag("js",new Date());
+gtag("config","G-KFGVW1WRMB",{anonymize_ip:true,allow_google_signals:false,allow_ad_personalization_signals:false});
+</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Backups are not restores","datePublished":"2026-11-03T00:00:00Z","author":{"@type":"Person","name":"Rados Budisa","sameAs":["https://www.instagram.com/burad.ships/"]},"publisher":{"@type":"Organization","name":"3am Deploy"}}</script>
+</head><body data-episode="backup" data-page="backup">
 <a class="skip-link" href="#main">Skip to content</a>
-<a class="home-link wrap" href="../">← All checklists</a>
+<a class="home-link wrap" href="../">← All episodes</a>
 <header class="wrap brand-bar">
 <a class="brand-link" href="../">
-<img class="brand-avatar" src="../assets/avatar_circle.png" width="48" height="48" alt="">
-<span class="brand-name"><span class="hl">Ship</span></span>
+<img class="brand-avatar" src="../assets/avatar_circle.png" width="48" height="48" alt="Portrait of Rados Budisa">
+<span class="brand-name"><span class="hl">3am Deploy</span></span>
 </a>
 </header>
 <main id="main" class="wrap">
@@ -31,9 +50,10 @@
 <p class="lead-promise">A monthly restore drill you can run in an hour.</p>
 <p class="episode-meta">From the post on 3 Nov 2026</p>
 </header>
-<section class="checklist" aria-labelledby="checklist-heading">
+<div class="story"><p class="story-lede">Every team I have worked with that lost data had backup jobs reporting success. The gap is almost always restore: nobody timed it, and nobody tested the app against the copy.</p><p class="story-toc-label">The story in 3 steps</p><ol class="story-steps"><li class="story-step"><h2 class="story-step-title">Define loss and downtime you can accept</h2><p class="story-part"><span class="story-kicker">Situation</span> Backups run nightly but nobody has written down RPO or RTO.</p><p class="story-part"><span class="story-kicker">Decision</span> Agree how much data and how many hours you can lose before the business cares.</p><p class="story-part"><span class="story-kicker">Tradeoff</span> Tighter numbers cost storage and engineering time.</p><p class="story-part"><span class="story-kicker">What I choose</span> Write RPO and RTO on the runbook wall. Match backup frequency and restore target to those numbers.</p><p class="story-part"><span class="story-kicker">What happens in prod</span> During an outage, arguments about acceptable loss waste the hours you needed for the restore.</p><ul class="step-source-list"><li><span class="source-domain">sre.google</span><a href="https://sre.google/sre-book/data-integrity/" rel="noopener noreferrer">Google SRE: Data Integrity</a></li></ul></li><li class="story-step"><h2 class="story-step-title">Backup the whole system, not just the database</h2><p class="story-part"><span class="story-kicker">Situation</span> The database dump restores cleanly but uploads and config live elsewhere.</p><p class="story-part"><span class="story-kicker">Decision</span> List every store: database, files, secrets, search indexes if any.</p><p class="story-part"><span class="story-kicker">Tradeoff</span> Object storage versioning and separate secret vaults add ops work.</p><p class="story-part"><span class="story-kicker">What I choose</span> Database plus files plus config in a vault. Credentials for backups live off the machine being backed up.</p><p class="story-part"><span class="story-kicker">What happens in prod</span> Schema without roles, or uploads without objects, produces a green restore that still cannot serve users.</p><ul class="step-source-list"><li><span class="source-domain">postgresql.org</span><a href="https://www.postgresql.org/docs/current/backup.html" rel="noopener noreferrer">PostgreSQL backup</a></li><li><span class="source-domain">postgresql.org</span><a href="https://www.postgresql.org/docs/current/continuous-archiving.html" rel="noopener noreferrer">PostgreSQL PITR</a></li></ul></li><li class="story-step"><h2 class="story-step-title">Restore into scratch, on a calendar</h2><p class="story-part"><span class="story-kicker">Situation</span> The team trusts the backup vendor dashboard.</p><p class="story-part"><span class="story-kicker">Decision</span> Treat untested backup as a hypothesis.</p><p class="story-part"><span class="story-kicker">Tradeoff</span> Monthly drills interrupt other work.</p><p class="story-part"><span class="story-kicker">What I choose</span> Once a month, restore to a scratch environment, time it, smoke-test login and one workflow, alert on missed drills.</p><p class="story-part"><span class="story-kicker">What happens in prod</span> The first real restore mid-outage is when you learn the dump never included extensions or queue state.</p><ul class="step-source-list"><li><span class="source-domain">sre.google</span><a href="https://sre.google/sre-book/data-integrity/" rel="noopener noreferrer">Google SRE: Data Integrity</a></li></ul></li></ol></div>
+<section class="checklist reference-checklist" aria-labelledby="reference-list-heading">
 <div class="checklist-head">
-<h2 id="checklist-heading">Checklist</h2>
+<h2 id="reference-list-heading">Reference list</h2>
 <span id="checklist-progress" class="checklist-progress">0 / 12 done</span>
 </div><div class="checklist-section"><p class="lead">Every team I've seen lose data had backups. The nightly job was green for months. Nobody had ever restored one.</p><p class="lead">What breaks in prod: the first real restore happens during the outage. That's when you find out what the backup doesn't contain.</p></div><div class="checklist-section"><h3>The 4 patterns I see over and over</h3><ul class="checklist-items"><li><label class="checklist-row"><input type="checkbox" id="backup-0" data-item="backup-0"><span class="check-ui" aria-hidden="true"></span><span class="check-body"><strong>The dump isn't the system.</strong> Roles, grants and extensions missing, so it won't load cleanly. Config and secrets were never in it. The schema restores; the app still can't start.</span></label></li><li><label class="checklist-row"><input type="checkbox" id="backup-1" data-item="backup-1"><span class="check-ui" aria-hidden="true"></span><span class="check-body"><strong>Files nobody covered.</strong> User uploads live in object storage that no backup touches. No versioning, so a delete is permanent.</span></label></li><li><label class="checklist-row"><input type="checkbox" id="backup-2" data-item="backup-2"><span class="check-ui" aria-hidden="true"></span><span class="check-body"><strong>Keys on the same box.</strong> Backup credentials stored on the machine being backed up, in the same account and region. One incident takes out the system AND the way back.</span></label></li><li><label class="checklist-row"><input type="checkbox" id="backup-3" data-item="backup-3"><span class="check-ui" aria-hidden="true"></span><span class="check-body"><strong>Hours, not minutes.</strong> Nobody timed a restore. The data grew; the estimate didn't.</span></label></li></ul></div><div class="checklist-section"><h3>The drill I run on every system I'm responsible for</h3><ul class="checklist-items"><li><label class="checklist-row"><input type="checkbox" id="backup-4" data-item="backup-4"><span class="check-ui" aria-hidden="true"></span><span class="check-body">Write down RPO (how much data you can afford to lose) and RTO (how long you can afford to be down).</span></label></li><li><label class="checklist-row"><input type="checkbox" id="backup-5" data-item="backup-5"><span class="check-ui" aria-hidden="true"></span><span class="check-body">Back up the database AND files AND config/secrets (in a separate vault).</span></label></li><li><label class="checklist-row"><input type="checkbox" id="backup-6" data-item="backup-6"><span class="check-ui" aria-hidden="true"></span><span class="check-body">Keep backup credentials off the machine being backed up. Keep at least one copy in a different account or region.</span></label></li><li><label class="checklist-row"><input type="checkbox" id="backup-7" data-item="backup-7"><span class="check-ui" aria-hidden="true"></span><span class="check-body">Use point-in-time recovery where your database offers it.</span></label></li><li><label class="checklist-row"><input type="checkbox" id="backup-8" data-item="backup-8"><span class="check-ui" aria-hidden="true"></span><span class="check-body">Once a month, restore into a scratch environment. Time it.</span></label></li><li><label class="checklist-row"><input type="checkbox" id="backup-9" data-item="backup-9"><span class="check-ui" aria-hidden="true"></span><span class="check-body">Smoke-test the restored copy: row counts, a login, one real workflow.</span></label></li><li><label class="checklist-row"><input type="checkbox" id="backup-10" data-item="backup-10"><span class="check-ui" aria-hidden="true"></span><span class="check-body">Alert on a failed backup job AND on a missed restore drill.</span></label></li><li><label class="checklist-row"><input type="checkbox" id="backup-11" data-item="backup-11"><span class="check-ui" aria-hidden="true"></span><span class="check-body">Document the restore steps so someone other than you can run them at 3 am.</span></label></li></ul><p class="lead">My call: a monthly drill costs a few hours. I take that over finding out mid-outage, every time. A backup you haven't restored is a hypothesis.</p></div></section>
 <section class="prompt-section" aria-labelledby="prompt-heading">
@@ -46,20 +66,18 @@
 <pre class="prompt-block" id="prompt-backup">Write a restore runbook for this project: list every data store, how it's backed up, how to restore it to a scratch environment, and a smoke test (row counts, login, one workflow). Flag anything not backed up.</pre>
 </div>
 </section>
-<section class="sources" aria-labelledby="sources-heading">
-<h2 id="sources-heading">Official sources</h2>
-<ul class="source-list"><li><span class="source-domain">postgresql.org</span><a href="https://www.postgresql.org/docs/current/backup.html" rel="noopener noreferrer">PostgreSQL backup</a><span class="source-note">Backup approaches for Postgres.</span></li><li><span class="source-domain">postgresql.org</span><a href="https://www.postgresql.org/docs/current/continuous-archiving.html" rel="noopener noreferrer">PostgreSQL PITR</a><span class="source-note">Continuous archiving and point-in-time recovery.</span></li><li><span class="source-domain">sre.google</span><a href="https://sre.google/sre-book/data-integrity/" rel="noopener noreferrer">Google SRE: Data Integrity</a><span class="source-note">Designing for recoverable data.</span></li></ul></section>
+
 </article>
-<nav class="episode-nav wrap" aria-label="Episode navigation"><a class="ep-nav-link prev" href="../security/"><span class="ep-nav-label">← Ep. 03</span><span class="ep-nav-title">7 security holes I find in almost every audit</span></a><a class="ep-nav-link next" href="../launch/"><span class="ep-nav-label">Ep. 01 →</span><span class="ep-nav-title">20 things I check before any app goes live</span></a></nav>
+<nav class="episode-nav wrap episode-nav--single" aria-label="Episode navigation"><a class="ep-nav-link prev" href="../launch/"><span class="ep-nav-label">← Ep. 01</span><span class="ep-nav-title">20 things I check before any app goes live</span></a></nav>
 <section class="cta-audit wrap" aria-labelledby="cta-backup">
 <h2 id="cta-backup" class="visually-hidden">Convertix audit</h2>
 <p><strong>Need it done?</strong> Launch audit for AI-built apps. €390, 3 working days. A senior developer reads your code, database rules and payment flow, then tells you what to fix before real users arrive.</p>
 <p class="vat">Convertix Digital (Pika Care d.o.o., Slovenia) is not VAT-registered. VAT is not charged under Art. 94(1) ZDDV-1.</p>
-<a class="btn-audit" href="https://convertixdigital.com/en/audit?utm_source=ship-hub&utm_content=backup">See the audit →</a>
+<a class="btn-audit" href="https://convertixdigital.com/en/audit?utm_source=3am_deploy&amp;utm_medium=referral&amp;utm_campaign=backup&amp;utm_content=audit" data-outbound="audit" rel="noopener noreferrer">See the audit →</a>
 </section>
 </main>
 <footer class="site-footer wrap">
-<p>© 2026 Rados Budisa · <a href="../privacy/">Privacy</a> · <a href="https://www.instagram.com/inventive.dev/" rel="noopener noreferrer">Instagram</a> · Examples use example.com; no client data.</p>
+<p>© 2026 Rados Budisa · <a href="../privacy/">Privacy</a> · <a href="https://www.instagram.com/burad.ships/?utm_source=3am_deploy&amp;utm_medium=referral&amp;utm_campaign=backup&amp;utm_content=instagram" data-outbound="instagram" rel="noopener noreferrer">Instagram</a> · Examples use example.com; no client data.</p>
 </footer>
 <script src="../assets/main.js" defer></script>
 </body>

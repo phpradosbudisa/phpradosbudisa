@@ -1,13 +1,17 @@
+import { WHY_EPISODE, applyStories } from "./stories.mjs";
+
 export const SITE = {
   baseUrl: "https://phpradosbudisa.github.io/phpradosbudisa",
-  instagram: "https://www.instagram.com/inventive.dev/",
-  title: "Ship: what actually breaks when you go live",
+  instagram: "https://www.instagram.com/burad.ships/",
+  brandName: "3am Deploy",
+  title: "3am Deploy: what actually breaks when you go live",
   metaDescription:
-    "Free checklists from 20 years of shipping software. One page per topic, with a copy-paste prompt and official sources.",
+    "Stories from 8 years of shipping software: what breaks in prod and the call I make.",
   name: "Rados Budisa",
-  positioning: "20 years shipping software",
+  positioning: "8 years shipping software",
   intro:
     "The posts introduce the topic. These pages are the reference you come back to.",
+  ga4Id: "G-KFGVW1WRMB",
 };
 
 export const FILTERS = [
@@ -18,10 +22,60 @@ export const FILTERS = [
   { id: "build-in-public", label: "Build in public" },
 ];
 
-export const EPISODES = [
+export const PRODUCTS = [
+  {
+    name: "Convertix",
+    url: "https://convertixdigital.com",
+    domain: "convertixdigital.com",
+    tagline: "We fix and ship AI-built apps.",
+    status: "Live",
+    linkSlug: "convertix",
+  },
+  {
+    name: "Urejamo.si",
+    url: "https://urejamo.si",
+    domain: "urejamo.si",
+    tagline: "One inquiry. Up to three offers.",
+    status: "Live",
+    linkSlug: "urejamo",
+  },
+  {
+    name: "DueChat",
+    url: "https://duechat.io",
+    domain: "duechat.io",
+    tagline: "Your AI can now get you paid.",
+    status: "Live",
+    linkSlug: "duechat",
+  },
+  {
+    name: "Nabiralniček",
+    url: "https://nabiralnicek.si",
+    domain: "nabiralnicek.si",
+    tagline: "Pošta pride k nam. Vi jo vidite v portalu.",
+    status: "Live",
+    linkSlug: "nabiralnicek",
+  },
+  {
+    name: "Holdquiet",
+    tagline: "Coming soon.",
+    status: "Coming soon",
+  },
+  {
+    name: "Odprti prihodki",
+    tagline: "Verified revenue of Slovenian startups.",
+    status: "Building",
+  },
+];
+
+export function episodeIsLive(ep) {
+  return ep.live !== false;
+}
+
+const EPISODE_LIST = [
   {
     slug: "docs",
     num: 8,
+    live: false,
     keyword: "DOCS",
     kind: "checklist",
     date: "14 Nov 2026",
@@ -69,6 +123,7 @@ export const EPISODES = [
   {
     slug: "pricing",
     num: 7,
+    live: false,
     keyword: "PRICING",
     kind: "build-in-public",
     date: "12 Nov 2026",
@@ -116,6 +171,7 @@ export const EPISODES = [
   {
     slug: "seo",
     num: 6,
+    live: false,
     keyword: "SEO",
     kind: "checklist",
     date: "10 Nov 2026",
@@ -164,6 +220,7 @@ export const EPISODES = [
   {
     slug: "email",
     num: 5,
+    live: false,
     keyword: "EMAIL",
     kind: "checklist",
     date: "9 Nov 2026",
@@ -227,6 +284,7 @@ export const EPISODES = [
   {
     slug: "monolith",
     num: 4,
+    live: false,
     keyword: "MONOLITH",
     kind: "tradeoff",
     date: "7 Nov 2026",
@@ -298,6 +356,7 @@ export const EPISODES = [
   {
     slug: "security",
     num: 3,
+    live: false,
     keyword: "SECURITY",
     kind: "checklist",
     date: "5 Nov 2026",
@@ -357,6 +416,7 @@ export const EPISODES = [
   {
     slug: "backup",
     num: 2,
+    live: true,
     keyword: "BACKUP",
     kind: "war-story",
     date: "3 Nov 2026",
@@ -420,6 +480,7 @@ export const EPISODES = [
   {
     slug: "launch",
     num: 1,
+    live: true,
     keyword: "LAUNCH",
     kind: "checklist",
     date: "2 Nov 2026",
@@ -430,7 +491,7 @@ export const EPISODES = [
       {
         title: null,
         lead: [
-          "20 years of shipping software, and launch day still breaks in the same places. This is the list I go through before anything goes live, mine or a client's.",
+          "Eight years of shipping software, and launch day still breaks in the same places. This is the list I go through before anything goes live, mine or a client's.",
           "What breaks in prod is rarely the feature. It's the cert nobody renews, the reset email in spam, the migration that locks a table.",
         ],
         items: [],
@@ -530,6 +591,8 @@ export const EPISODES = [
     ],
   },
 ];
+
+export const EPISODES = [WHY_EPISODE, ...applyStories(EPISODE_LIST)];
 
 export function launchPromptBody(ep) {
   if (!ep.promptList) return ep.prompt;

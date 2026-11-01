@@ -3,25 +3,40 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>4 docs before anyone touches your codebase · Ship</title>
+<title>4 docs before anyone touches your codebase · 3am Deploy</title>
 <meta name="description" content="The 4 files that stop newcomers guessing.">
 <link rel="canonical" href="https://phpradosbudisa.github.io/phpradosbudisa/docs/">
-<meta property="og:type" content="website">
-<meta property="og:title" content="4 docs before anyone touches your codebase · Ship">
+<meta property="og:type" content="article">
+<meta property="og:title" content="4 docs before anyone touches your codebase · 3am Deploy">
 <meta property="og:description" content="The 4 files that stop newcomers guessing.">
 <meta property="og:url" content="https://phpradosbudisa.github.io/phpradosbudisa/docs/">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="4 docs before anyone touches your codebase · Ship">
+<meta property="og:site_name" content="3am Deploy">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="4 docs before anyone touches your codebase · 3am Deploy">
 <meta name="twitter:description" content="The 4 files that stop newcomers guessing.">
+<link rel="preload" href="../assets/fonts/inter-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="../assets/fonts/dm-serif-display.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="../assets/styles.css">
 <link rel="stylesheet" href="../assets/print.css" media="print">
-</head><body data-episode="docs">
+<script>
+window.dataLayer=window.dataLayer||[];
+function gtag(){dataLayer.push(arguments);}
+gtag("consent","default",{ad_storage:"denied",analytics_storage:"denied",ad_user_data:"denied",ad_personalization:"denied",wait_for_update:500});
+</script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-KFGVW1WRMB"></script>
+<script>
+gtag("js",new Date());
+gtag("config","G-KFGVW1WRMB",{anonymize_ip:true,allow_google_signals:false,allow_ad_personalization_signals:false});
+</script>
+
+</head><body data-episode="docs" data-page="docs">
 <a class="skip-link" href="#main">Skip to content</a>
-<a class="home-link wrap" href="../">← All checklists</a>
+<a class="home-link wrap" href="../">← All episodes</a>
 <header class="wrap brand-bar">
 <a class="brand-link" href="../">
-<img class="brand-avatar" src="../assets/avatar_circle.png" width="48" height="48" alt="">
-<span class="brand-name"><span class="hl">Ship</span></span>
+<img class="brand-avatar" src="../assets/avatar_circle.png" width="48" height="48" alt="Portrait of Rados Budisa">
+<span class="brand-name"><span class="hl">3am Deploy</span></span>
 </a>
 </header>
 <main id="main" class="wrap">
@@ -29,11 +44,12 @@
 <header class="episode-page-head">
 <h1>4 docs before anyone touches your codebase</h1>
 <p class="lead-promise">The 4 files that stop newcomers guessing.</p>
-<p class="episode-meta">From the post on 14 Nov 2026</p>
+
 </header>
-<section class="checklist" aria-labelledby="checklist-heading">
+<div class="story"><p class="story-lede">Onboarding speed is documentation speed. Before a new hire or contractor merges, I want four short files that answer run, architecture, decisions, and rules.</p><p class="story-toc-label">The story in 3 steps</p><ol class="story-steps"><li class="story-step"><h2 class="story-step-title">Runbook before repo tour</h2><p class="story-part"><span class="story-kicker">Situation</span> A newcomer asks how to deploy in chat every week.</p><p class="story-part"><span class="story-kicker">Decision</span> Write commands before explanations.</p><p class="story-part"><span class="story-kicker">Tradeoff</span> Runbooks go stale if nobody owns them.</p><p class="story-part"><span class="story-kicker">What I choose</span> RUNBOOK.md with local run, test, deploy, rollback, logs, and who gets paged.</p><p class="story-part"><span class="story-kicker">What happens in prod</span> Tribal knowledge ships guesses; guesses ship bugs that the next person re-guesses.</p></li><li class="story-step"><h2 class="story-step-title">Architecture for money paths</h2><p class="story-part"><span class="story-kicker">Situation</span> Modules overlap and nobody knows which table owns billing state.</p><p class="story-part"><span class="story-kicker">Decision</span> Document modules, owned tables, and the three journeys that pay.</p><p class="story-part"><span class="story-kicker">Tradeoff</span> Architecture docs can balloon into unreadable wikis.</p><p class="story-part"><span class="story-kicker">What I choose</span> One short ARCHITECTURE.md: modules, data flow for signup, core action, payment, external dependencies.</p><p class="story-part"><span class="story-kicker">What happens in prod</span> Outages stretch when three people each think a different service owns the broken table.</p><ul class="step-source-list"><li><span class="source-domain">cognitect.com</span><a href="https://cognitect.com/blog/2011/11/15/documenting-architecture-decisions" rel="noopener noreferrer">Documenting Architecture Decisions</a></li><li><span class="source-domain">adr.github.io</span><a href="https://adr.github.io/" rel="noopener noreferrer">adr.github.io</a></li></ul></li><li class="story-step"><h2 class="story-step-title">Decisions and rules</h2><p class="story-part"><span class="story-kicker">Situation</span> A smart newcomer refactors a deliberate tradeoff.</p><p class="story-part"><span class="story-kicker">Decision</span> Record big choices and no-go zones.</p><p class="story-part"><span class="story-kicker">Tradeoff</span> ADR overhead feels heavy on a two-person team.</p><p class="story-part"><span class="story-kicker">What I choose</span> DECISIONS/ with context and consequences; RULES.md for naming, logging, migrations, billing, auth review.</p><p class="story-part"><span class="story-kicker">What happens in prod</span> Without written decisions, every new contributor relitigates the same boundary calls.</p><ul class="step-source-list"><li><span class="source-domain">cognitect.com</span><a href="https://cognitect.com/blog/2011/11/15/documenting-architecture-decisions" rel="noopener noreferrer">Documenting Architecture Decisions</a></li><li><span class="source-domain">docs.github.com</span><a href="https://docs.github.com/en/communities/setting-up-your-project-for-healthy-contributions/setting-guidelines-for-repository-contributors" rel="noopener noreferrer">Setting guidelines for repository contributors</a></li></ul></li></ol></div>
+<section class="checklist reference-checklist" aria-labelledby="reference-list-heading">
 <div class="checklist-head">
-<h2 id="checklist-heading">Checklist</h2>
+<h2 id="reference-list-heading">Reference list</h2>
 <span id="checklist-progress" class="checklist-progress">0 / 4 done</span>
 </div><div class="checklist-section"><p class="lead">Before anyone new touches a codebase I'm responsible for (a new hire or a contractor), these 4 files exist.</p><p class="lead">What breaks in prod: without them, people guess. Guesses ship, and they get &quot;fixed&quot; by the next person who guesses.</p><ul class="checklist-items"><li><label class="checklist-row"><input type="checkbox" id="docs-0" data-item="docs-0"><span class="check-ui" aria-hidden="true"></span><span class="check-body"><strong>RUNBOOK.md</strong><ul><li>Run locally, run the tests, deploy, roll back: as copy-paste commands.</li><li>Where the logs and dashboards are.</li><li>Who gets paged, and what "down" means.</li></ul></span></label></li><li><label class="checklist-row"><input type="checkbox" id="docs-1" data-item="docs-1"><span class="check-ui" aria-hidden="true"></span><span class="check-body"><strong>ARCHITECTURE.md</strong><ul><li>The modules, and which tables each one owns.</li><li>Data flow for the 3 journeys that make money (signup, core action, payment).</li><li>Every external service, and what breaks when it's down.</li></ul></span></label></li><li><label class="checklist-row"><input type="checkbox" id="docs-2" data-item="docs-2"><span class="check-ui" aria-hidden="true"></span><span class="check-body"><strong>DECISIONS/</strong> (one short record per big choice)<ul><li>Context, decision, alternatives rejected, consequences, when to revisit.</li><li>This is what stops a smart newcomer from "fixing" a tradeoff that was deliberate.</li></ul></span></label></li><li><label class="checklist-row"><input type="checkbox" id="docs-3" data-item="docs-3"><span class="check-ui" aria-hidden="true"></span><span class="check-body"><strong>RULES.md</strong> (or CONTRIBUTING.md)<ul><li>Naming, error handling, logging conventions.</li><li>No-go zones: migrations, billing, auth. Changes there need review.</li><li>Secrets never go in code or chat.</li><li>Definition of done: tests, docs updated, rollback path.</li></ul></span></label></li></ul><p class="lead">My call: an hour per doc vs. weeks of tribal knowledge. Keep each one short enough that people actually read it. One page beats a wiki nobody opens.</p></div></section>
 <section class="prompt-section" aria-labelledby="prompt-heading">
@@ -46,20 +62,18 @@
 <pre class="prompt-block" id="prompt-docs">Read this repository and draft RUNBOOK.md, ARCHITECTURE.md, a DECISIONS/ folder with records for the 3 biggest existing choices, and RULES.md. Mark every guess as TODO for me to verify.</pre>
 </div>
 </section>
-<section class="sources" aria-labelledby="sources-heading">
-<h2 id="sources-heading">Official sources</h2>
-<ul class="source-list"><li><span class="source-domain">cognitect.com</span><a href="https://cognitect.com/blog/2011/11/15/documenting-architecture-decisions" rel="noopener noreferrer">Documenting Architecture Decisions</a><span class="source-note">Michael Nygard on ADR format and why to write decisions down.</span></li><li><span class="source-domain">adr.github.io</span><a href="https://adr.github.io/" rel="noopener noreferrer">adr.github.io</a><span class="source-note">Templates and tooling for architecture decision records.</span></li><li><span class="source-domain">docs.github.com</span><a href="https://docs.github.com/en/communities/setting-up-your-project-for-healthy-contributions/setting-guidelines-for-repository-contributors" rel="noopener noreferrer">Setting guidelines for repository contributors</a><span class="source-note">GitHub guidance for CONTRIBUTING and community docs.</span></li></ul></section>
+
 </article>
-<nav class="episode-nav wrap episode-nav--single" aria-label="Episode navigation"><span></span><a class="ep-nav-link next" href="../pricing/"><span class="ep-nav-label">Ep. 07 →</span><span class="ep-nav-title">How I'd price a SaaS today</span></a></nav>
+
 <section class="cta-audit wrap" aria-labelledby="cta-docs">
 <h2 id="cta-docs" class="visually-hidden">Convertix audit</h2>
 <p><strong>Need it done?</strong> Launch audit for AI-built apps. €390, 3 working days. A senior developer reads your code, database rules and payment flow, then tells you what to fix before real users arrive.</p>
 <p class="vat">Convertix Digital (Pika Care d.o.o., Slovenia) is not VAT-registered. VAT is not charged under Art. 94(1) ZDDV-1.</p>
-<a class="btn-audit" href="https://convertixdigital.com/en/audit?utm_source=ship-hub&utm_content=docs">See the audit →</a>
+<a class="btn-audit" href="https://convertixdigital.com/en/audit?utm_source=3am_deploy&amp;utm_medium=referral&amp;utm_campaign=docs&amp;utm_content=audit" data-outbound="audit" rel="noopener noreferrer">See the audit →</a>
 </section>
 </main>
 <footer class="site-footer wrap">
-<p>© 2026 Rados Budisa · <a href="../privacy/">Privacy</a> · <a href="https://www.instagram.com/inventive.dev/" rel="noopener noreferrer">Instagram</a> · Examples use example.com; no client data.</p>
+<p>© 2026 Rados Budisa · <a href="../privacy/">Privacy</a> · <a href="https://www.instagram.com/burad.ships/?utm_source=3am_deploy&amp;utm_medium=referral&amp;utm_campaign=docs&amp;utm_content=instagram" data-outbound="instagram" rel="noopener noreferrer">Instagram</a> · Examples use example.com; no client data.</p>
 </footer>
 <script src="../assets/main.js" defer></script>
 </body>
