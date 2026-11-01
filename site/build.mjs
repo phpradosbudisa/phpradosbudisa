@@ -559,14 +559,15 @@ ${pageScripts(depth)}
 
 function notFoundPage() {
   const depth = 0;
+  const head = headMeta({
+    title: "Page not found",
+    description: "This page does not exist.",
+    url: `${SITE.baseUrl}/404.html`,
+    depth,
+    pageSlug: "404",
+  }).replace("</head>", `<base href="${SITE.baseUrl}/">\n</head>`);
   return (
-    headMeta({
-      title: "Page not found",
-      description: "This page does not exist.",
-      url: `${SITE.baseUrl}/404.html`,
-      depth,
-      pageSlug: "404",
-    }) +
+    head +
     `<body data-page="404">
 ${brandBar(depth)}
 <main class="wrap not-found">
