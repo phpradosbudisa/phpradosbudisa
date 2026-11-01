@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>7 security holes I find in almost every audit · Ship</title>
+<meta name="description" content="Check your app for the 7 holes before someone else does.">
+<link rel="canonical" href="https://phpradosbudisa.github.io/security/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="7 security holes I find in almost every audit · Ship">
+<meta property="og:description" content="Check your app for the 7 holes before someone else does.">
+<meta property="og:url" content="https://phpradosbudisa.github.io/security/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="7 security holes I find in almost every audit · Ship">
+<meta name="twitter:description" content="Check your app for the 7 holes before someone else does.">
+<link rel="stylesheet" href="../assets/styles.css">
+<link rel="stylesheet" href="../assets/print.css" media="print">
+</head><body data-episode="security">
+<a class="skip-link" href="#main">Skip to content</a>
+<a class="home-link wrap" href="../">← All checklists</a>
+<header class="wrap brand-bar">
+<a class="brand-link" href="../">
+<img class="brand-avatar" src="../assets/avatar_circle.png" width="48" height="48" alt="">
+<span class="brand-name"><span class="hl">Ship</span></span>
+</a>
+</header>
+<main id="main" class="wrap">
+<article>
+<header class="episode-page-head">
+<h1>7 security holes I find in almost every audit</h1>
+<p class="lead-promise">Check your app for the 7 holes before someone else does.</p>
+<p class="episode-meta">From the post on 5 Nov 2026</p>
+</header>
+<section class="checklist" aria-labelledby="checklist-heading">
+<div class="checklist-head">
+<h2 id="checklist-heading">Checklist</h2>
+<span id="checklist-progress" class="checklist-progress">0 / 7 done</span>
+</div><div class="checklist-section"><p class="lead">I audit a lot of apps before they launch. Different stacks, same 7 holes.</p><p class="lead">What breaks in prod is never the clever exploit. It's someone changing ?id=42 to ?id=43.</p><ul class="checklist-items"><li><label class="checklist-row"><input type="checkbox" id="security-0" data-item="security-0"><span class="check-ui" aria-hidden="true"></span><span class="check-body"><strong>Secret keys in the frontend bundle.</strong> Service keys, payment secret keys, third-party API keys. If it's in the browser, it's public. Move it server-side and rotate it.</span></label></li><li><label class="checklist-row"><input type="checkbox" id="security-1" data-item="security-1"><span class="check-ui" aria-hidden="true"></span><span class="check-body"><strong>Database tables any logged-in user can read.</strong> Row-level rules missing or set to "authenticated = allowed". Deny by default, then allow per owner. Test as a second user.</span></label></li><li><label class="checklist-row"><input type="checkbox" id="security-2" data-item="security-2"><span class="check-ui" aria-hidden="true"></span><span class="check-body"><strong>The API trusts the ID in the request.</strong> The UI hides other users' records; the endpoint happily returns them if you change ?id=. Check ownership on the server, every time.</span></label></li><li><label class="checklist-row"><input type="checkbox" id="security-3" data-item="security-3"><span class="check-ui" aria-hidden="true"></span><span class="check-body"><strong>No rate limits on login, password reset or OTP.</strong> That's how you get credential stuffing and a surprise SMS bill. Limit per IP AND per account.</span></label></li><li><label class="checklist-row"><input type="checkbox" id="security-4" data-item="security-4"><span class="check-ui" aria-hidden="true"></span><span class="check-body"><strong>Payment webhooks that aren't verified.</strong> Anyone can POST "payment succeeded". Verify the signature, make the handler idempotent.</span></label></li><li><label class="checklist-row"><input type="checkbox" id="security-5" data-item="security-5"><span class="check-ui" aria-hidden="true"></span><span class="check-body"><strong>Public storage buckets and unchecked uploads.</strong> Listable files, user documents behind guessable URLs. Keep buckets private, serve signed URLs, check type and size.</span></label></li><li><label class="checklist-row"><input type="checkbox" id="security-6" data-item="security-6"><span class="check-ui" aria-hidden="true"></span><span class="check-body"><strong>Debug leftovers in production.</strong> Admin or debug routes, source maps, verbose errors, CORS set to *. Turn them off for prod builds.</span></label></li></ul><p class="lead">My call: one day of checks before launch beats a breach notice after. It's the cheapest security work you'll ever buy.</p></div></section>
+<section class="prompt-section" aria-labelledby="prompt-heading">
+<h2 id="prompt-heading">Copy-paste prompt</h2>
+<div class="prompt-card">
+<div class="prompt-toolbar">
+<span>Paste into your coding assistant</span>
+<button type="button" data-copy-target="prompt-security">Copy prompt</button>
+</div>
+<pre class="prompt-block" id="prompt-security">Check this codebase for the 7 issues below. For each: where it occurs (file:line), severity, and a minimal fix. Search the built frontend bundle for key patterns. List every table without deny-by-default access rules.</pre>
+</div>
+</section>
+<section class="sources" aria-labelledby="sources-heading">
+<h2 id="sources-heading">Official sources</h2>
+<ul class="source-list"><li><span class="source-domain">owasp.org</span><a href="https://owasp.org/Top10/" rel="noopener noreferrer">OWASP Top 10</a><span class="source-note">Common application security risks.</span></li><li><span class="source-domain">owasp.org</span><a href="https://owasp.org/API-Security/" rel="noopener noreferrer">OWASP API Security Top 10</a><span class="source-note">API-specific failure modes.</span></li><li><span class="source-domain">cheatsheetseries.owasp.org</span><a href="https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html" rel="noopener noreferrer">Authentication Cheat Sheet</a><span class="source-note">Session and auth hardening patterns.</span></li><li><span class="source-domain">supabase.com</span><a href="https://supabase.com/docs/guides/database/postgres/row-level-security" rel="noopener noreferrer">Supabase RLS</a><span class="source-note">Row-level security for Postgres.</span></li><li><span class="source-domain">docs.stripe.com</span><a href="https://docs.stripe.com/webhooks" rel="noopener noreferrer">Stripe webhook verification</a><span class="source-note">Signing secret verification for webhooks.</span></li></ul></section>
+</article>
+<nav class="episode-nav wrap" aria-label="Episode navigation"><a class="ep-nav-link prev" href="../monolith/"><span class="ep-nav-label">← Ep. 04</span><span class="ep-nav-title">Monolith first. Still my call.</span></a><a class="ep-nav-link next" href="../backup/"><span class="ep-nav-label">Ep. 02 →</span><span class="ep-nav-title">Backups are not restores</span></a></nav>
+<section class="cta-audit wrap" aria-labelledby="cta-security">
+<h2 id="cta-security" class="visually-hidden">Convertix audit</h2>
+<p><strong>Need it done?</strong> Launch audit for AI-built apps. €390, 3 working days. A senior developer reads your code, database rules and payment flow, then tells you what to fix before real users arrive.</p>
+<p class="vat">Convertix Digital (Pika Care d.o.o., Slovenia) is not VAT-registered. VAT is not charged under Art. 94(1) ZDDV-1.</p>
+<a class="btn-audit" href="https://convertixdigital.com/en/audit?utm_source=ship-hub&utm_content=security">See the audit →</a>
+</section>
+</main>
+<footer class="site-footer wrap">
+<p>© 2026 Rados Budisa · <a href="../privacy/">Privacy</a> · <a href="https://www.instagram.com/inventive.dev/" rel="noopener noreferrer">Instagram</a> · Examples use example.com; no client data.</p>
+</footer>
+<script src="../assets/main.js" defer></script>
+</body>
+</html>

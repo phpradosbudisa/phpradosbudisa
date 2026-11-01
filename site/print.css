@@ -1,0 +1,26 @@
+@media print {
+  body {
+    background: #fff !important;
+    color: #16131b;
+  }
+  .pill-row,
+  .cta-audit,
+  .episode-nav,
+  .prompt-toolbar button,
+  .site-footer {
+    display: none !important;
+  }
+  .checklist-row input:checked ~ .check-ui {
+    background: #d9f94a !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  a[href]::after {
+    content: " (" attr(href) ")";
+    font-size: 0.85em;
+    color: #4b4454;
+  }
+  .prompt-card {
+    break-inside: avoid;
+  }
+}
