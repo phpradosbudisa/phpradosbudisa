@@ -332,7 +332,8 @@ button:focus-visible {
   grid-template-areas:
     "name arrow"
     "tagline arrow"
-    "domain arrow";
+    "domain arrow"
+    "status arrow";
   gap: var(--s1) var(--s2);
   padding: var(--s3) var(--s1);
   min-height: var(--tap);
@@ -342,10 +343,66 @@ button:focus-visible {
 
 @media (min-width: 640px) {
   .product-row a {
-    grid-template-columns: 11rem 1fr auto auto;
-    grid-template-areas: "name tagline domain arrow";
+    grid-template-columns: 11rem 1fr auto auto auto;
+    grid-template-areas: "name tagline domain status arrow";
     align-items: center;
     padding: var(--s3) var(--s2);
+  }
+}
+
+.product-row--static .product-row-inner {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-areas:
+    "name status"
+    "tagline status";
+  gap: var(--s1) var(--s2);
+  padding: var(--s3) var(--s1);
+}
+
+@media (min-width: 640px) {
+  .product-row--static .product-row-inner {
+    grid-template-columns: 11rem 1fr auto;
+    grid-template-areas: "name tagline status";
+    align-items: center;
+    padding: var(--s3) var(--s2);
+  }
+}
+
+.product-status {
+  grid-area: status;
+  justify-self: start;
+  padding: 4px var(--s1);
+  border-radius: 8px;
+  font-family: "Geist Mono", ui-monospace, monospace;
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.product-status--live {
+  background: var(--hl);
+  color: var(--ink);
+}
+
+.product-status--soon {
+  background: var(--lilac);
+  color: var(--ink);
+}
+
+.product-status--building {
+  background: var(--border);
+  color: var(--mut);
+}
+
+.product-row a .product-status {
+  justify-self: end;
+}
+
+@media (min-width: 640px) {
+  .product-row a .product-status {
+    justify-self: start;
   }
 }
 

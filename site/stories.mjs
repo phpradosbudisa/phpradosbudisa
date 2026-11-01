@@ -9,6 +9,7 @@ export const WHY_EPISODE = {
   promise:
     "Eight years of shipping software, and the patterns that still decide launch week.",
   introPage: true,
+  live: true,
   storyLede:
     "After eight years of shipping APIs, dashboards, and mobile apps for my own products and for teams who need something live, the same failure modes keep showing up. Ship is where I write down what I actually check before go-live, with enough context to decide what applies to your stack.",
   introSections: [
@@ -16,7 +17,7 @@ export const WHY_EPISODE = {
       heading: "Why this series exists",
       paragraphs: [
         "Useful detail rarely arrives before launch. It shows up in the week after, when traffic, email, payments, or search behave differently than they did on a laptop.",
-        "These pages capture the decisions and tradeoffs behind each checklist, while the pattern is still clear. No generic advice: each episode is one topic, one pass you can run on a real project.",
+        "These pages capture the decisions and tradeoffs behind each reference list, while the pattern is still clear. No generic advice: each episode is one topic, one pass you can run on a real project.",
       ],
     },
     {
@@ -26,7 +27,7 @@ export const WHY_EPISODE = {
     {
       heading: "How to use the series",
       paragraphs: [
-        "Short reels on Instagram introduce the topic and the promise. These pages are the reference you keep open while you work: sources, a copy-paste prompt where it helps, and a checklist you can tick off in the browser.",
+        "Short reels on Instagram introduce the topic and the promise. These pages are the reference you keep open while you work: sources, prompts where they help, and a list you can tick off in the browser.",
         "You do not need to read everything in order. Open the episode that matches the problem in front of you, take what fits, and leave the rest.",
       ],
     },
@@ -107,7 +108,7 @@ export const STORY_BY_SLUG = {
         choice:
           "One-step rollback rehearsed, error tracking that pages a human, uptime on a path that logs in, 301 map if URLs changed.",
         prod:
-          "Quiet launch weeks correlate with boring checklists, not with luck.",
+          "Quiet launch weeks correlate with boring prep, not with luck.",
         sourceIndexes: [0, 4],
       },
     ],

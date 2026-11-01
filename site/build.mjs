@@ -1,7 +1,7 @@
 import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
-import { SITE, EPISODES, PRODUCTS, getPrompt } from "./episodes.mjs";
+import { SITE, EPISODES, PRODUCTS, getPrompt, episodeIsLive } from "./episodes.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.join(__dirname, "..");
@@ -86,9 +86,8 @@ function homeHero(depth) {
 <img class="hero-avatar" src="${prefix}assets/avatar_circle.png" width="144" height="144" alt="">
 <div>
 <h1 class="hero-title"><span class="hl">Ship</span></h1>
-<p class="hero-sub">what actually breaks when you go live</p>
+<p class="hero-sub">Stories from 8 years of shipping software: what breaks in prod and the call I make.</p>
 <p class="hero-bio">Senior developer · ${esc(SITE.positioning)}</p>
-<p class="hero-meta">${esc(SITE.metaDescription)}</p>
 <div class="pill-row">
 <a class="pill" href="${SITE.instagram}" rel="noopener noreferrer">Instagram</a>
 <a class="pill" href="#products">Products</a>
@@ -171,7 +170,7 @@ function renderStory(ep) {
 
 function renderEpisodeIndexList(depth) {
   const prefix = assetPrefix(depth);
-  const rows = EPISODES.filter((e) => e.num > 0)
+  const rows = EPISODES.filter((e) => e.num > 0 && episodeIsLive(e))
     .slice()
     .sort((a, b) => a.num - b.num)
     .map(
@@ -186,9 +185,9 @@ function renderChecklist(ep) {
   if (!ep.sections?.length || ep.introPage) return "";
   const total = countChecklistItems(ep);
   let itemIndex = 0;
-  let html = `<section class="checklist reference-checklist" aria-labelledby="checklist-heading">
+  let html = `<section class="checklist reference-checklist" aria-labelledby="reference-list-heading">
 <div class="checklist-head">
-<h2 id="checklist-heading">Reference checklist</h2>
+<h2 id="reference-list-heading">Reference list</h2>
 <span id="checklist-progress" class="checklist-progress">0 / ${total} done</span>
 </div>`;
   for (const sec of ep.sections) {
@@ -244,25 +243,28 @@ function renderSources(ep) {
 }
 
 function listEpisodesHome() {
-  const rest = EPISODES.filter((e) => !e.introPage)
+  const rest = EPISODES.filter((e) => !e.introPage && episodeIsLive(e))
     .slice()
     .sort((a, b) => b.num - a.num);
-  const intro = EPISODES.find((e) => e.introPage);
+  const intro = EPISODES.find((e) => e.introPage && episodeIsLive(e));
   return intro ? [intro, ...rest] : rest;
 }
 
 function navEpisodes(ep) {
-  const intro = EPISODES.find((e) => e.introPage);
-  const numbered = EPISODES.filter((e) => !e.introPage)
+  const intro = EPISODES.find((e) => e.introPage && episodeIsLive(e));
+  const numbered = EPISODES.filter((e) => !e.introPage && episodeIsLive(e))
     .slice()
     .sort((a, b) => a.num - b.num);
+  const idx = numbered.findIndex((e) => e.slug === ep.slug);
   if (ep.introPage) {
     return { newer: null, older: numbered[0] || null };
   }
-  const idx = numbered.findIndex((e) => e.slug === ep.slug);
+  if (idx < 0) {
+    return { newer: null, older: null };
+  }
   const newer =
     idx <= 0 ? intro || null : numbered[idx - 1];
-  const older = idx < 0 || idx >= numbered.length - 1 ? null : numbered[idx + 1];
+  const older = idx >= numbered.length - 1 ? null : numbered[idx + 1];
   return { newer, older };
 }
 
@@ -290,7 +292,9 @@ function episodePage(ep) {
   const url = `${SITE.baseUrl}/${ep.slug}/`;
   const metaLine = ep.introPage
     ? `<p class="episode-meta">${esc(SITE.positioning)}</p>`
-    : `<p class="episode-meta">From the post on ${esc(ep.date)}</p>`;
+    : episodeIsLive(ep)
+      ? `<p class="episode-meta">From the post on ${esc(ep.date)}</p>`
+      : "";
   const body = `<body data-episode="${ep.slug}">
 <a class="skip-link" href="#main">Skip to content</a>
 <a class="home-link wrap" href="${prefix}">← All episodes</a>
@@ -325,10 +329,25 @@ ${footer(depth)}
   );
 }
 
+function productStatusClass(status) {
+  const s = String(status).toLowerCase();
+  if (s === "live") return "product-status--live";
+  if (s.includes("coming")) return "product-status--soon";
+  return "product-status--building";
+}
+
 function productRows() {
   let html = `<ul class="product-list">`;
   for (const p of PRODUCTS) {
-    html += `<li class="product-row"><a href="${esc(p.url)}" rel="noopener noreferrer"><span class="product-name">${esc(p.name)}</span><span class="product-tagline">${esc(p.tagline)}</span><span class="product-domain">${esc(p.domain)}</span><span class="product-arrow" aria-hidden="true">→</span></a></li>`;
+    const chip = `<span class="product-status ${productStatusClass(p.status)}">${esc(p.status)}</span>`;
+    const domain = p.domain
+      ? `<span class="product-domain">${esc(p.domain)}</span>`
+      : "";
+    if (p.url) {
+      html += `<li class="product-row"><a href="${esc(p.url)}" rel="noopener noreferrer"><span class="product-name">${esc(p.name)}</span><span class="product-tagline">${esc(p.tagline)}</span>${domain}${chip}<span class="product-arrow" aria-hidden="true">→</span></a></li>`;
+    } else {
+      html += `<li class="product-row product-row--static"><div class="product-row-inner"><span class="product-name">${esc(p.name)}</span><span class="product-tagline">${esc(p.tagline)}</span>${chip}</div></li>`;
+    }
   }
   html += `</ul>`;
   return html;
@@ -396,7 +415,7 @@ function notFoundPage() {
   return (
     headMeta({
       title: "Page not found",
-      description: "This checklist page does not exist.",
+      description: "This page does not exist.",
       url: `${SITE.baseUrl}/404.html`,
       depth,
     }) +
@@ -404,7 +423,7 @@ function notFoundPage() {
 ${brandBar(depth)}
 <main class="wrap not-found">
 <h1>Page not found</h1>
-<p>That checklist is not here. <a href="./">Back to Ship</a></p>
+<p>That page is not here. <a href="./">Back to Ship</a></p>
 </main>
 ${ctaAudit("404", depth)}
 ${footer(depth)}
@@ -417,7 +436,7 @@ ${footer(depth)}
 function sitemap() {
   const urls = [
     { loc: `${SITE.baseUrl}/`, priority: "1.0" },
-    ...EPISODES.map((e) => ({
+    ...EPISODES.filter((e) => episodeIsLive(e)).map((e) => ({
       loc: `${SITE.baseUrl}/${e.slug}/`,
       priority: "0.8",
       lastmod: e.dateIso,
@@ -480,9 +499,9 @@ writeFile(
   legalPage({
     slug: "privacy",
     title: "Privacy",
-    bodyHtml: `<p>At launch, this site collects no personal data through forms. Checklist progress is stored only in your browser (localStorage).</p>
+    bodyHtml: `<p>At launch, this site collects no personal data through forms. Reference list progress is stored only in your browser (localStorage).</p>
 <h2>Purpose &amp; legal basis</h2>
-<p>Static checklists for information only. No account system.</p>
+<p>Static episode pages for information only. No account system.</p>
 <h2>Processors</h2>
 <p>Hosting: GitHub Pages. Analytics (if enabled): cookieless (Cloudflare Web Analytics or GA4 without cookies).</p>
 <h2>Retention &amp; rights</h2>

@@ -5,7 +5,7 @@ export const SITE = {
   instagram: "https://www.instagram.com/inventive.dev/",
   title: "Ship: what actually breaks when you go live",
   metaDescription:
-    "Free checklists from 8 years of shipping software. One page per topic, with a copy-paste prompt and official sources.",
+    "Stories from 8 years of shipping software: what breaks in prod and the call I make.",
   name: "Rados Budisa",
   positioning: "8 years shipping software",
   intro:
@@ -26,19 +26,50 @@ export const PRODUCTS = [
     url: "https://convertixdigital.com",
     domain: "convertixdigital.com",
     tagline: "We fix and ship AI-built apps.",
+    status: "Live",
   },
   {
     name: "Urejamo.si",
     url: "https://urejamo.si",
     domain: "urejamo.si",
-    tagline: "One inquiry. Up to three quotes from local providers.",
+    tagline: "One inquiry. Up to three offers.",
+    status: "Live",
+  },
+  {
+    name: "DueChat",
+    url: "https://duechat.io",
+    domain: "duechat.io",
+    tagline: "Your AI can now get you paid.",
+    status: "Live",
+  },
+  {
+    name: "Nabiralniček",
+    url: "https://nabiralnicek.si",
+    domain: "nabiralnicek.si",
+    tagline: "Pošta pride k nam. Vi jo vidite v portalu.",
+    status: "Live",
+  },
+  {
+    name: "Holdquiet",
+    tagline: "Coming soon.",
+    status: "Coming soon",
+  },
+  {
+    name: "Odprti prihodki",
+    tagline: "Verified revenue of Slovenian startups.",
+    status: "Building",
   },
 ];
+
+export function episodeIsLive(ep) {
+  return ep.live !== false;
+}
 
 const EPISODE_LIST = [
   {
     slug: "docs",
     num: 8,
+    live: false,
     keyword: "DOCS",
     kind: "checklist",
     date: "14 Nov 2026",
@@ -86,6 +117,7 @@ const EPISODE_LIST = [
   {
     slug: "pricing",
     num: 7,
+    live: false,
     keyword: "PRICING",
     kind: "build-in-public",
     date: "12 Nov 2026",
@@ -133,6 +165,7 @@ const EPISODE_LIST = [
   {
     slug: "seo",
     num: 6,
+    live: false,
     keyword: "SEO",
     kind: "checklist",
     date: "10 Nov 2026",
@@ -181,6 +214,7 @@ const EPISODE_LIST = [
   {
     slug: "email",
     num: 5,
+    live: false,
     keyword: "EMAIL",
     kind: "checklist",
     date: "9 Nov 2026",
@@ -244,6 +278,7 @@ const EPISODE_LIST = [
   {
     slug: "monolith",
     num: 4,
+    live: false,
     keyword: "MONOLITH",
     kind: "tradeoff",
     date: "7 Nov 2026",
@@ -315,6 +350,7 @@ const EPISODE_LIST = [
   {
     slug: "security",
     num: 3,
+    live: false,
     keyword: "SECURITY",
     kind: "checklist",
     date: "5 Nov 2026",
@@ -374,6 +410,7 @@ const EPISODE_LIST = [
   {
     slug: "backup",
     num: 2,
+    live: true,
     keyword: "BACKUP",
     kind: "war-story",
     date: "3 Nov 2026",
@@ -437,6 +474,7 @@ const EPISODE_LIST = [
   {
     slug: "launch",
     num: 1,
+    live: true,
     keyword: "LAUNCH",
     kind: "checklist",
     date: "2 Nov 2026",
