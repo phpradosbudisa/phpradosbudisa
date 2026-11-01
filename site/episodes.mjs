@@ -3,6 +3,7 @@ import { WHY_EPISODE, applyStories } from "./stories.mjs";
 export const SITE = {
   baseUrl: "https://phpradosbudisa.github.io/phpradosbudisa",
   instagram: "https://www.instagram.com/burad.ships/",
+  linkedin: "https://www.linkedin.com/in/rados-budisa/",
   brandName: "3am Deploy",
   title: "3am Deploy: what actually breaks when you go live",
   metaDescription:
@@ -12,6 +13,12 @@ export const SITE = {
   intro:
     "The posts introduce the topic. These pages are the reference you come back to.",
   ga4Id: "G-KFGVW1WRMB",
+  finePrint: [
+    "Slovenia has about 2 million people. I run 5 products. Working on the ratio.",
+    "Five products in parallel. The CPU is fine. The calendar is not.",
+    "I ship before the burja does.",
+    "Burad means barrel. Five products, one barrel, zero leaks so far.",
+  ],
 };
 
 export const FILTERS = [
